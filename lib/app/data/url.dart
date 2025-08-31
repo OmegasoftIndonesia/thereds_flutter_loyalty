@@ -1,0 +1,23 @@
+import 'package:thereds_flutter_loyalty/app/data/Constants.dart';
+
+class URLAPI{
+
+  static String devProd =
+  (Constants.dbTestingName == "omegacloudtesting6")
+      ? "api-dev"
+      : "api-prod";
+  static String newDev =
+  (Constants.dbTestingName == "omegacloudtesting6")
+      ? "apidev"
+      : "apinew";
+  static String baseURL="https://api-prod.omegasoft.co.id/v1/";
+
+  static String loginOTP2 = "$baseURL${newDev}/loginOTP2";
+  static String sendOTP = "${baseURL}wa/sendOTP";
+  static String validateOTP = "${baseURL}wa/validateOTP";
+  static String insertCust = "$baseURL${newDev}/insertCust";
+  static String getKodePelanggan = "$baseURL${newDev}/getKodePelanggan";
+  static String listNotifikasi = "$baseURL${newDev}/ListNotifikasi";
+  static String promo = "http://bo.idekuliner.com/api/promo";
+  static String setCustProfile = "$baseURL${newDev}/setCustProfile";
+}

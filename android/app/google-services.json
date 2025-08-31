@@ -1,0 +1,235 @@
+{
+  "project_info": {
+    "project_number": "120548181390",
+    "firebase_url": "https://ide-kuliner.firebaseio.com",
+    "project_id": "ide-kuliner",
+    "storage_bucket": "ide-kuliner.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120548181390:android:4a53e5b524fbc4c54b50df",
+        "android_client_info": {
+          "package_name": "com.elsa.gajianduluan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120548181390-533tt2u3oosj2agm40lbqp66hkdibdje.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRVudDK8itdOZMBm2wg8mYfG_PMy4tYhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120548181390-2eni0dpvno4cjcaflun9c3fqhac1g89t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "120548181390-f2qt0uqadd0ktq8jmbmuh14cjbnaqt0f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.elsa.idekuliner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120548181390:android:fd8d6606e7b85d8d4b50df",
+        "android_client_info": {
+          "package_name": "elsa.idekuliner.gajianduluan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120548181390-533tt2u3oosj2agm40lbqp66hkdibdje.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRVudDK8itdOZMBm2wg8mYfG_PMy4tYhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120548181390-2eni0dpvno4cjcaflun9c3fqhac1g89t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "120548181390-f2qt0uqadd0ktq8jmbmuh14cjbnaqt0f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.elsa.idekuliner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120548181390:android:587baf63e9a998f24b50df",
+        "android_client_info": {
+          "package_name": "elsa.idekuliner.koperasikiss"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120548181390-533tt2u3oosj2agm40lbqp66hkdibdje.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRVudDK8itdOZMBm2wg8mYfG_PMy4tYhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120548181390-2eni0dpvno4cjcaflun9c3fqhac1g89t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "120548181390-f2qt0uqadd0ktq8jmbmuh14cjbnaqt0f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.elsa.idekuliner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120548181390:android:4d6f9da1828757934b50df",
+        "android_client_info": {
+          "package_name": "elsa.idekuliner.omegascmnew"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120548181390-533tt2u3oosj2agm40lbqp66hkdibdje.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRVudDK8itdOZMBm2wg8mYfG_PMy4tYhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120548181390-2eni0dpvno4cjcaflun9c3fqhac1g89t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "120548181390-f2qt0uqadd0ktq8jmbmuh14cjbnaqt0f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.elsa.idekuliner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120548181390:android:f45538b7938f8ecf4b50df",
+        "android_client_info": {
+          "package_name": "elsa.idekuliner.thereds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120548181390-533tt2u3oosj2agm40lbqp66hkdibdje.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRVudDK8itdOZMBm2wg8mYfG_PMy4tYhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120548181390-2eni0dpvno4cjcaflun9c3fqhac1g89t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "120548181390-f2qt0uqadd0ktq8jmbmuh14cjbnaqt0f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.elsa.idekuliner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120548181390:android:d4050e0936a09b774b50df",
+        "android_client_info": {
+          "package_name": "elsa.pppau.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120548181390-quh38u10fhphh6gah9pv07v3964fo90e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "elsa.pppau.com",
+            "certificate_hash": "d533d2d46c6ec6a130a9236a1cc7f59f748da9c2"
+          }
+        },
+        {
+          "client_id": "120548181390-533tt2u3oosj2agm40lbqp66hkdibdje.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRVudDK8itdOZMBm2wg8mYfG_PMy4tYhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120548181390-2eni0dpvno4cjcaflun9c3fqhac1g89t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "120548181390-f2qt0uqadd0ktq8jmbmuh14cjbnaqt0f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.elsa.idekuliner"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
