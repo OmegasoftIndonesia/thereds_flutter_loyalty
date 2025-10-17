@@ -36,10 +36,11 @@ class HomeView extends GetView<HomeController> {
           },
           color: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          itemBuilder: (context) => [
-            PopupMenuItem(onTap: (){
+          itemBuilder: (context) =>
+          [
+            PopupMenuItem(onTap: () {
               Get.toNamed(Routes.PROFILE);
-            },value: 'profile', child: Text('Profile')),
+            }, value: 'profile', child: Text('Profile')),
           ],
           child: Row(
             children: [
@@ -72,7 +73,10 @@ class HomeView extends GetView<HomeController> {
                     color: Color(Constants.BGInput),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
                   height: 130,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -180,31 +184,35 @@ class HomeView extends GetView<HomeController> {
                                 child: Row(
                                   children: [
                                     InkWell(
-                                      onTap: (){
+                                      onTap: () {
                                         Get.toNamed(Routes.MEMBERSHIPPOINT);
                                       },
-                                      child: Container(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            right: 8,
-                                            top: 3,
-                                            bottom: 3,
+                                      child: Obx(() {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            color: Color(Constants.mainColor),
+                                            borderRadius: BorderRadius.circular(
+                                                50),
                                           ),
-                                          child: Text(
-                                            "Level 3",
-                                            style: TextStyle(color: Colors.white),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 8.0,
+                                              right: 8,
+                                              top: 3,
+                                              bottom: 3,
+                                            ),
+                                            child: Text(
+                                              "${controller.level.value}",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
                                           ),
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Color(Constants.mainColor),
-                                          borderRadius: BorderRadius.circular(50),
-                                        ),
-                                      ),
+                                        );
+                                      }),
                                     ),
                                     SizedBox(width: 10),
                                     InkWell(
-                                      onTap: (){
+                                      onTap: () {
                                         Get.toNamed(Routes.POINTHISTORY);
                                       },
                                       child: Container(
@@ -217,12 +225,14 @@ class HomeView extends GetView<HomeController> {
                                           ),
                                           child: Text(
                                             "History",
-                                            style: TextStyle(color: Colors.white),
+                                            style: TextStyle(
+                                                color: Colors.white),
                                           ),
                                         ),
                                         decoration: BoxDecoration(
                                           color: Color(Constants.mainColor),
-                                          borderRadius: BorderRadius.circular(50),
+                                          borderRadius: BorderRadius.circular(
+                                              50),
                                         ),
                                       ),
                                     ),
@@ -274,38 +284,44 @@ class HomeView extends GetView<HomeController> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Container(
-                  child: CarouselSlider(
-                    items: [
-                      InkWell(onTap:(){
-                        Get.toNamed(Routes.GAMELIST);
-                      },child: Image.asset("${Constants.imageAsset}sample1.png")),
-                      Image.asset("${Constants.imageAsset}sample1.png"),
-                    ],
-                    options: CarouselOptions(
-                      height: 170,
-                      aspectRatio: 16 / 9,
-                      viewportFraction: 0.8,
-                      initialPage: 0,
-                      enableInfiniteScroll: true,
-                      reverse: false,
-                      autoPlay: true,
-                      autoPlayInterval: Duration(seconds: 3),
-                      autoPlayAnimationDuration: Duration(milliseconds: 800),
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enlargeCenterPage: true,
-                      enlargeFactor: 0.3,
-                      scrollDirection: Axis.horizontal,
+                Obx(() {
+                  return InkWell(
+                    onTap: () {
+                      Get.toNamed(Routes.GAMELIST);
+                    },
+                    child: Container(
+                      child: CarouselSlider(
+                        items: controller.GameItem,
+                        options: CarouselOptions(
+                          height: 170,
+                          aspectRatio: 16 / 9,
+                          viewportFraction: 0.8,
+                          initialPage: 0,
+                          enableInfiniteScroll: true,
+                          reverse: false,
+                          autoPlay: true,
+                          autoPlayInterval: Duration(seconds: 3),
+                          autoPlayAnimationDuration: Duration(
+                              milliseconds: 800),
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          enlargeCenterPage: true,
+                          enlargeFactor: 0.3,
+                          scrollDirection: Axis.horizontal,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                }),
                 Spacer(),
                 Container(
                   decoration: BoxDecoration(
                     color: Color(Constants.mainColor),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
                   height: 50,
                   child: TextButton(
                     onPressed: () {

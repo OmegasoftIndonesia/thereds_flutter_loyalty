@@ -1,7 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:thereds_flutter_loyalty/app/data/NumberFormatter.dart';
+import 'package:thereds_flutter_loyalty/app/util/dialog_util.dart';
 
 import '../../../data/Constants.dart';
 import '../../../routes/app_pages.dart';
@@ -74,69 +77,82 @@ class BookingView extends GetView<BookingController> {
                     );
                   }),
                 ),
-                SizedBox(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
-                  height: 70,
-                  child: ListView.builder(
-                    itemCount: 3,
-
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (BuildContext context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: 100,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Color(Constants.BGInput),
-                            borderRadius: BorderRadius.circular(10),
+                Obx(() {
+                  return SizedBox(
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
+                    height: 70,
+                    child: (controller.listRentObject.value.data != null) ?
+                    ListView.builder(
+                      itemCount: controller.listRentObject.value.data!.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (BuildContext context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              controller.selectIndex.value = index;
+                              controller.getPaket(
+                                  controller.listRentObject.value.data![index]
+                                      .kode!);
+                            },
+                            child: Obx(() {
+                              return Container(
+                                width: 100,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: (controller.selectIndex.value == index)
+                                      ? Color(Constants.mainColor)
+                                      : Color(Constants.BGInput),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  "${controller.listRentObject.value
+                                      .data![index]
+                                      .noRentObject}",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                ),
+                              );
+                            }),
                           ),
-                          child: Text(
-                            "VIP 02",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Container(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Color(Constants.BGInput),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: DropdownButtonFormField(
-                    icon: Icon(Icons.keyboard_arrow_down, color: Colors.white,),
-                    isExpanded: true,
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.sports_esports, color: Colors.white,),
-                        border: InputBorder.none
+                        );
+                      },
+                    ) : SizedBox(),
+                  );
+                }),
+                Obx(() {
+                  return Container(
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Color(Constants.BGInput),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    style: TextStyle(color: Colors.white),
-                    dropdownColor: Color(Constants.BGApp),
-                    value: controller.selectedpaket.value,
-                    items: [
-                      DropdownMenuItem(
-                          value: 2, child: Text("paket 2 Jam", style: TextStyle(
-                          color: Colors.white),)),
-                      DropdownMenuItem(
-                          value: 3, child: Text("paket 3 Jam", style: TextStyle(
-                          color: Colors.white),)),
-                    ],
-                    onChanged: (value) {
-                      controller.selectedpaket.value = value!;
-                    },
-                  ),
-                ),
+                    child: DropdownButtonFormField(
+                      icon: Icon(Icons.keyboard_arrow_down, color: Colors
+                          .white,),
+                      isExpanded: true,
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.sports_esports, color: Colors.white,),
+                          border: InputBorder.none
+                      ),
+                      style: TextStyle(color: Colors.white),
+                      dropdownColor: Color(Constants.BGApp),
+                      value: controller.dropdownPaketValue.value,
+                      items: controller.dropdownPaket,
+                      onChanged: (value) {
+                        controller.onSelectPaket(value);
+                      },
+                    ),
+                  );
+                }),
                 SizedBox(height: 10,),
                 Container(
                   width: MediaQuery
@@ -150,12 +166,13 @@ class BookingView extends GetView<BookingController> {
                   ),
                   padding: EdgeInsets.all(8),
                   child: Obx(() {
-                    return ListView(
+                    return (controller.times.length<=0)?SizedBox():ListView.builder(
                       scrollDirection: Axis.vertical,
-                      children: controller.times.map((slot) {
+                      itemCount:  controller.times.length,
+                      itemBuilder: (BuildContext context, index){
                         return InkWell(
                           onTap: () {
-                            controller.checkTime(slot['number']);
+                            controller.checkTime(index);
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -169,7 +186,7 @@ class BookingView extends GetView<BookingController> {
                                   width: 60,
                                   child: Center(
                                     child: Text(
-                                      slot["time"]!,
+                                      controller.times[index]["Jam"]!,
                                       style: const TextStyle(
                                           color: Colors.white),
                                     ),
@@ -180,11 +197,11 @@ class BookingView extends GetView<BookingController> {
                                     height: 50,
                                     decoration: BoxDecoration(
                                       color: controller.getStatusColor(
-                                          slot["status"]!),
+                                          controller.times[index]["StatusBooking"]!),
                                     ),
                                     child: Center(
                                       child: Text(
-                                        slot["status"]!,
+                                        controller.times[index]["StatusBooking"]!,
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w500,
@@ -197,7 +214,10 @@ class BookingView extends GetView<BookingController> {
                             ),
                           ),
                         );
-                      }).toList(),
+                      },
+                      // children: controller.times.map((slot) {
+                      //
+                      // }).toList(),
                     );
                   }),
                 ),
@@ -226,23 +246,26 @@ class BookingView extends GetView<BookingController> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      RichText(
-                        text: TextSpan(
-                            children: [
-                              TextSpan(
-                                  text: "Total ",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15)
-                              ),
-                              TextSpan(
-                                  text: " ${NumberFormatter.currency(45000)}",
-                                  style: TextStyle(color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold)
-                              ),
-                            ]
-                        ),
-                      ),
+                      Obx(() {
+                        return RichText(
+                          text: TextSpan(
+                              children: [
+                                TextSpan(
+                                    text: "Total ",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15)
+                                ),
+                                TextSpan(
+                                    text: " ${NumberFormatter.currency(
+                                        controller.total.value)}",
+                                    style: TextStyle(color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold)
+                                ),
+                              ]
+                          ),
+                        );
+                      }),
                       InkWell(
                         onTap: () {
                           Get.toNamed(Routes.PAYMENT);

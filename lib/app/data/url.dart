@@ -20,4 +20,11 @@ class URLAPI{
   static String listNotifikasi = "$baseURL${newDev}/ListNotifikasi";
   static String promo = "http://bo.idekuliner.com/api/promo";
   static String setCustProfile = "$baseURL${newDev}/setCustProfile";
+  static String getGameList = "$baseURL${newDev}/getGameList";
+  static String getMemberLevel = "$baseURL${newDev}/getMemberLevel";
+  static String getPaketByRentObject = "$baseURL${newDev}/getPaketByRentObject";
+  static String ListRentObject = "$baseURL${newDev}/ListRentObject";
+  static String getRoomSchedule = "$baseURL${newDev}/getRoomSchedule";
+  static String createGopay = "https://api-prod.omegasoft.co.id/v3/payment/gopay/transaction";
+  static String getGopay = "https://api-prod.omegasoft.co.id/v3/payment/gopay/gettransaction";
 }
