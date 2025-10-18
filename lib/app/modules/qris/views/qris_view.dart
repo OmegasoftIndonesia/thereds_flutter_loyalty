@@ -33,27 +33,41 @@ class QrisView extends GetView<QrisController> {
           child: Column(
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Text("""Download QRIS dibawah ini dan lakukan\npembayaran di platform pembayaran\nfavorit Anda""", textAlign: TextAlign.center,style: TextStyle(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                child: Text(
+                  """Download QRIS dibawah ini dan lakukan\npembayaran di platform pembayaran\nfavorit Anda""",
+                  textAlign: TextAlign.center, style: TextStyle(
                   color: Colors.white,
 
                 ),),
               ),
-              Image.asset("${Constants.imageAsset}barcode.png", width: MediaQuery.of(context).size.width,height: 500,),
+              Obx(() {
+                return (controller.url == "")?SizedBox():Image.network("${controller.url}", width: MediaQuery
+                    .of(context)
+                    .size
+                    .width, height: 500,);
+              }),
               InkWell(
-                onTap: (){
-                  Get.toNamed(Routes.PAYMENTSUCCESS);
+                onTap: () {
                 },
                 child: Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
                   height: 50,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Color(Constants.mainColor),
-                    borderRadius: BorderRadius.circular(10)
+                      color: Color(Constants.mainColor),
+                      borderRadius: BorderRadius.circular(10)
                   ),
                   child: Text("Download QRIS", style: TextStyle(
-                    color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
                   ),),
                 ),
               )

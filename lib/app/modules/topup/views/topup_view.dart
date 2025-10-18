@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:thereds_flutter_loyalty/app/data/NumberFormatter.dart';
 import 'package:thereds_flutter_loyalty/app/routes/app_pages.dart';
+import 'package:thereds_flutter_loyalty/app/util/dialog_util.dart';
 
 import '../../../data/Constants.dart';
 import '../../home/views/home_view.dart';
@@ -79,14 +80,26 @@ class TopupView extends GetView<TopupController> {
                           color: Color(Constants.BGInput),
                           borderRadius: BorderRadius.circular(10)
                       ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: TextField(
+                          readOnly: true,
+                          controller: controller.nominal,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+
+                          ),
                         ),
                       ),
                     ),
                     Row(
                       children: [
+
                         customTopUpButton(50000, 5000),
                         customTopUpButton(100000, 10000),
                         customTopUpButton(250000, 25000),
@@ -94,6 +107,7 @@ class TopupView extends GetView<TopupController> {
                     ),
                     Row(
                       children: [
+                        customTopUpButton(1, 1),
                         customTopUpButton(500000, 50000),
                         customTopUpButton(1000000, 100000),
                       ],
@@ -138,7 +152,12 @@ class TopupView extends GetView<TopupController> {
                     Spacer(),
                     InkWell(
                       onTap: (){
-                        Get.toNamed(Routes.QRIS);
+                        if(controller.nominal.text==""||controller.nominal.text == null){
+                          DialogUtil.show("Anda belum memasukan nominal Top-Up");
+                        }else{
+                          Get.toNamed(Routes.QRIS);
+                        }
+
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,
@@ -165,25 +184,31 @@ class TopupView extends GetView<TopupController> {
   }
 
   Widget customTopUpButton(int nominal, int point) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8, right: 8),
-      child: Container(
-        width: 100,
-        height: 50,
-        decoration: BoxDecoration(
-            color: Color(Constants.BGApp),
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(color: Color(Constants.mainColor))
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("${NumberFormatter.currency(nominal)}",
-              style: TextStyle(color: Colors.white, fontSize: 12),),
-            Text("+ ${NumberFormatter.decimal(point)} Points",
-                style: TextStyle(color: Colors.green, fontSize: 10))
-          ],
+    return InkWell(
+      onTap: (){
+        controller.nominal.text = nominal.toString();
+        controller.point = point.toString();
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8, right: 8),
+        child: Container(
+          width: 100,
+          height: 50,
+          decoration: BoxDecoration(
+              color: Color(Constants.BGApp),
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: Color(Constants.mainColor))
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("${NumberFormatter.currency(nominal)}",
+                style: TextStyle(color: Colors.white, fontSize: 12),),
+              Text("+ ${NumberFormatter.decimal(point)} Points",
+                  style: TextStyle(color: Colors.green, fontSize: 10))
+            ],
+          ),
         ),
       ),
     );

@@ -30,7 +30,7 @@ class createGopayRequest {
       String URL = URLAPI.createGopay;
       createGopayRequest request = createGopayRequest();
       request.amount = amount;
-      request.outlet=Constants.cabang;
+      request.outlet=Constants.branch;
 
       dio.options.headers['Authorization']=Constants.apiToken;
       dio.options.headers['Uid']="tZD7CG3idLxrABc6KPpEeVqgXkyawjlH";

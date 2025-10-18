@@ -4,6 +4,7 @@ class PaymentsuccessController extends GetxController {
   //TODO: Implement PaymentsuccessController
 
   final count = 0.obs;
+  final data = Get.arguments;
   @override
   void onInit() {
     super.onInit();

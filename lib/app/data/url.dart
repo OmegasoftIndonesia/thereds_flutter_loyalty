@@ -27,4 +27,5 @@ class URLAPI{
   static String getRoomSchedule = "$baseURL${newDev}/getRoomSchedule";
   static String createGopay = "https://api-prod.omegasoft.co.id/v3/payment/gopay/transaction";
   static String getGopay = "https://api-prod.omegasoft.co.id/v3/payment/gopay/gettransaction";
+  static String insertpiutangdraftso = "$baseURL${newDev}/insertpiutangdraftso";
 }

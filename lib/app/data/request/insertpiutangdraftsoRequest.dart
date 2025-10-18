@@ -50,11 +50,11 @@ class insertpiutangdraftsoRequest {
     Dio dio = Dio();
 
     try {
-      String URL = URLAPI.getGameList;
+      String URL = URLAPI.insertpiutangdraftso;
       insertpiutangdraftsoRequest request = insertpiutangdraftsoRequest();
       request.token= Constants.apiToken;
       request.amount = amount;
-      request.cabang= util.getString(PreferencesUtil.cabang);
+      request.cabang= Constants.branch;
       request.cust = util.getString(PreferencesUtil.kodePelanggan);
       request.kodenota = kodeNota;
       request.kodepayment = kodePay;

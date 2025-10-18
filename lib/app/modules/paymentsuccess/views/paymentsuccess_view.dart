@@ -37,7 +37,7 @@ class PaymentsuccessView extends GetView<PaymentsuccessController> {
               Image.asset("${Constants.imageAsset}success.png", width: 70,height: 70,),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                child: Text("${NumberFormatter.decimal(45000)}", textAlign: TextAlign.center,style: TextStyle(
+                child: Text("${NumberFormatter.decimal(int.parse(controller.data["nominal"]))}", textAlign: TextAlign.center,style: TextStyle(
                     color: Colors.white, fontSize: 30
                 ),),
               ),
@@ -50,7 +50,7 @@ class PaymentsuccessView extends GetView<PaymentsuccessController> {
               SizedBox(height: 10,),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                child: Text("Kamu baru saja mengisi 45,000 Redcoin ke akunmu. Bonus +450 XP langsung masuk! Selamat Bermain di The Reds Gaming Lounge!", textAlign: TextAlign.center,style: TextStyle(
+                child: Text("Kamu baru saja mengisi ${NumberFormatter.decimal(int.parse(controller.data["nominal"]))} Redcoin ke akunmu. Bonus +${controller.data['point']} XP langsung masuk! Selamat Bermain di The Reds Gaming Lounge!", textAlign: TextAlign.center,style: TextStyle(
                   color: Colors.white,
                 ),),
               ),
