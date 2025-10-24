@@ -9,27 +9,14 @@ class PreferencesUtil {
   static const String email = "email";
   static const String phone = "phone";
   static const String name = "name";
+  static const String serverKeyGopay= "serverKeyGopay";
   static const String tglLahir = "tglLahir";
-  static const String phoneOwner = "phoneOwner";
+  static const String whatsApp = "whatsApp";
   static const String deviceUUID = "deviceUUID";
   static const String fotoKTP = "fotoKTP";
   static const String fotoOrangKTP = "fotoOrangKTP";
-  static const String tglgabung = "tglGabung";
-  static const String rank = "rank";
-  static const String NamaRank = "NamaRank";
-  static const String ttd = "ttd";
-  static const String pinNum = "pinNum";
-  static const String mercId = "mercId";
-  static const String AccountNumber = "AccountNumber";
-  static const String password = "password";
-  static const String branch = "branch";
-  static const String cabang = "cabang";
-  static const String IsRepresentatif = "IsRepresentatif";
-  static const String StatusAnggota = "StatusAnggota";
-  static const String StatusSP = "StatusSP";
-  static const String IsMengundurkanDiri = "IsMengundurkanDiri";
-  static const String toPengunduran = "toPengunduran";
   static const String kota = "kota";
+  static const String ppn = "ppn";
   static Future<PreferencesUtil?> getInstance() async {
     manager ??= PreferencesUtil();
     sharedPreferences ??= await SharedPreferences.getInstance();
@@ -80,5 +67,12 @@ class PreferencesUtil {
     sharedPreferences!.remove(PreferencesUtil.phone);
     sharedPreferences!.remove(PreferencesUtil.name);
     sharedPreferences!.remove(PreferencesUtil.deviceUUID);
+    sharedPreferences!.remove(PreferencesUtil.tglLahir);
+    sharedPreferences!.remove(PreferencesUtil.whatsApp);
+    sharedPreferences!.remove(PreferencesUtil.fotoKTP);
+    sharedPreferences!.remove(PreferencesUtil.fotoOrangKTP);
+    sharedPreferences!.remove(PreferencesUtil.kota);
+    sharedPreferences!.remove(PreferencesUtil.ppn);
+    sharedPreferences!.remove(PreferencesUtil.serverKeyGopay);
   }
 }

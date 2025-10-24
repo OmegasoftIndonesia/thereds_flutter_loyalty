@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:thereds_flutter_loyalty/app/data/request/loginOTP2Request.dart';
 import 'package:thereds_flutter_loyalty/app/data/request/setCustProfileRequest.dart';
 import 'package:thereds_flutter_loyalty/app/data/upload_media_with_retry.dart';
+import 'package:thereds_flutter_loyalty/app/routes/app_pages.dart';
 import 'package:thereds_flutter_loyalty/app/util/dialog_image_picker.dart';
 import 'package:thereds_flutter_loyalty/app/util/shared_prefs.dart';
 
@@ -83,6 +84,11 @@ class ProfileController extends GetxController {
         });
       });
     }
+  }
+
+  void SignOut()async{
+    util.clearAll();
+    Get.offAllNamed(Routes.LOGIN);
   }
 
   void pickImage()async{

@@ -60,7 +60,7 @@ class TopupView extends GetView<TopupController> {
                                 height: 25,
                               ),
                               Text(
-                                "2.500.000",
+                                NumberFormatter.decimal(double.parse(controller.walletMember.value).toInt()),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 30,
@@ -99,7 +99,6 @@ class TopupView extends GetView<TopupController> {
                     ),
                     Row(
                       children: [
-
                         customTopUpButton(50000, 5000),
                         customTopUpButton(100000, 10000),
                         customTopUpButton(250000, 25000),
@@ -155,7 +154,11 @@ class TopupView extends GetView<TopupController> {
                         if(controller.nominal.text==""||controller.nominal.text == null){
                           DialogUtil.show("Anda belum memasukan nominal Top-Up");
                         }else{
-                          Get.toNamed(Routes.QRIS);
+                          Get.toNamed(Routes.QRIS, arguments: {
+                            "total" :controller.nominal.text,
+                            "point" :controller.point,
+                            "purpose": "topup"
+                          });
                         }
 
                       },

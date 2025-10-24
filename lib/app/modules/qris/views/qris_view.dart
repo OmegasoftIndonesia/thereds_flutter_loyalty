@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:thereds_flutter_loyalty/app/routes/app_pages.dart';
 
 import '../../../data/Constants.dart';
 import '../../home/views/home_view.dart';
@@ -52,6 +51,8 @@ class QrisView extends GetView<QrisController> {
               }),
               InkWell(
                 onTap: () {
+                  //controller.insertPiutangDraftSO(controller.kodePay!);
+                  controller.downloadQR();
                 },
                 child: Container(
                   width: MediaQuery

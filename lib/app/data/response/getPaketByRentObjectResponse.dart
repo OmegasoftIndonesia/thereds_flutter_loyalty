@@ -1,7 +1,7 @@
 class getPaketByRentObjectResponse {
   String? status;
   String? message;
-  List<Data>? data;
+  List<DataPaket>? data;
 
   getPaketByRentObjectResponse({this.status, this.message, this.data});
 
@@ -9,9 +9,9 @@ class getPaketByRentObjectResponse {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <DataPaket>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new DataPaket.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class getPaketByRentObjectResponse {
   }
 }
 
-class Data {
+class DataPaket {
   String? kode;
   String? keterangan;
   String? minDuration;
@@ -43,8 +43,9 @@ class Data {
   String? isPreOrder;
   String? masaBerlaku;
   String? validDay;
+  String? jenisPekerjaan;
 
-  Data(
+  DataPaket(
       {this.kode,
         this.keterangan,
         this.minDuration,
@@ -59,9 +60,10 @@ class Data {
         this.maxHour,
         this.isPreOrder,
         this.masaBerlaku,
-        this.validDay});
+        this.validDay,
+        this.jenisPekerjaan});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  DataPaket.fromJson(Map<String, dynamic> json) {
     kode = json['Kode'];
     keterangan = json['Keterangan'];
     minDuration = json['MinDuration'];
@@ -77,6 +79,7 @@ class Data {
     isPreOrder = json['IsPreOrder'];
     masaBerlaku = json['MasaBerlaku'];
     validDay = json['ValidDay'];
+    jenisPekerjaan = json['JenisPekerjaan'];
   }
 
   Map<String, dynamic> toJson() {
@@ -96,6 +99,7 @@ class Data {
     data['IsPreOrder'] = this.isPreOrder;
     data['MasaBerlaku'] = this.masaBerlaku;
     data['ValidDay'] = this.validDay;
+    data['JenisPekerjaan'] = this.jenisPekerjaan;
     return data;
   }
 }

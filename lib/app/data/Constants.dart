@@ -1,4 +1,5 @@
 class Constants{
+  static String appName ='TheReds';
   static String imageAsset = "assets/images/";
   static String internetImage = "https://omegasoft.co.id/images/";
   static String cabang = "0000J";

@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
-import 'package:thereds_flutter_loyalty/app/util/shared_prefs.dart';
 
 import '../modules/booking/bindings/booking_binding.dart';
 import '../modules/booking/views/booking_view.dart';
+import '../modules/bookingHistory/bindings/booking_history_binding.dart';
+import '../modules/bookingHistory/views/booking_history_view.dart';
 import '../modules/gamelist/bindings/gamelist_binding.dart';
 import '../modules/gamelist/views/gamelist_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -35,6 +36,7 @@ import '../modules/topup/bindings/topup_binding.dart';
 import '../modules/topup/views/topup_view.dart';
 import '../modules/transactionHistory/bindings/transaction_history_binding.dart';
 import '../modules/transactionHistory/views/transaction_history_view.dart';
+import '../util/shared_prefs.dart';
 
 part 'app_routes.dart';
 
@@ -131,6 +133,11 @@ class AppPages {
       name: _Paths.PAYMENT,
       page: () => const PaymentView(),
       binding: PaymentBinding(),
+    ),
+    GetPage(
+      name: _Paths.BOOKING_HISTORY,
+      page: () => const BookingHistoryView(),
+      binding: BookingHistoryBinding(),
     ),
   ];
 }

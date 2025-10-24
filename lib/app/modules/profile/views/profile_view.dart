@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:thereds_flutter_loyalty/app/util/injector.dart';
 import 'package:thereds_flutter_loyalty/app/util/shared_prefs.dart';
 
 import '../../../data/Constants.dart';
@@ -326,7 +327,9 @@ class ProfileView extends GetView<ProfileController> {
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                     controller.SignOut();
+                    },
                     child: Text(
                       "Sign Out",
                       style: TextStyle(

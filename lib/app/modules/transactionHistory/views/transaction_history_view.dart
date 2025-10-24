@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:thereds_flutter_loyalty/app/data/Constants.dart';
+import 'package:thereds_flutter_loyalty/app/data/NumberFormatter.dart';
 import 'package:thereds_flutter_loyalty/app/modules/home/views/home_view.dart';
 
 import '../controllers/transaction_history_controller.dart';
@@ -27,66 +29,107 @@ class TransactionHistoryView extends GetView<TransactionHistoryController> {
         backgroundColor: Color(Constants.BGApp),
       ),
       body: Center(
-        child: Container(
-          child: ListView.builder(
-            itemCount: 3,
-            itemBuilder: (BuildContext context, index){
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color(Constants.BGInput),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
+        child: Obx(() {
+          return (controller.listDepo.value.data != null)?Container(
+            child: ListView.builder(
+              itemCount: controller.listDepo.value.data!.length,
+              itemBuilder: (BuildContext context, index) {
+                return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color(Constants.BGInput),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Image.asset(Constants.imageAsset+"topUp.png",
-                          width: 35,height: 35,),
-                          SizedBox(
-                            width: 10,
+                          Row(
+                            children: [
+                              Image.asset(
+                                Constants.imageAsset + "topUp.png",
+                                width: 35,
+                                height: 35,
+                              ),
+                              SizedBox(width: 10),
+                              SizedBox(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: 180,
+                                      child: Text(
+                                        controller
+                                            .listDepo
+                                            .value
+                                            .data![index]
+                                            .keterangan!,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      DateFormat('EEEE').format(
+                                        DateTime.parse(
+                                          controller
+                                              .listDepo
+                                              .value
+                                              .data![index]
+                                              .tgl!,
+                                        ),
+                                      ),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    Text(
+                                      DateFormat('MM dd, yyyy - HH.mm').format(
+                                        DateTime.parse(
+                                          controller
+                                              .listDepo
+                                              .value
+                                              .data![index]
+                                              .tgl!,
+                                        ),
+                                      ),
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Top Up",
-                                style: TextStyle(
-                                  color:Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15
-                                ),),
-                                Text("Saturday",style: TextStyle(
-                                    color:Colors.white,
-                                  fontSize: 12
-                                )),
-                                Text("June 9, 2025 - 06.00 PM",style: TextStyle(
-                                    color:Colors.grey,
-                                  fontSize: 12
-                                ))
-                              ],
+                          Text(
+                           NumberFormatter.decimal(double.parse(controller
+                                .listDepo
+                                .value
+                                .data![index]
+                                .depositBalance!).toInt()),
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
                             ),
                           ),
                         ],
                       ),
-                      Text("+1.000.000"
-                          ,style: TextStyle(
-                              color:Colors.green,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17
-                          ))
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            );
-          },),
-        ),
+                );
+              },
+            ),
+          ):SizedBox();
+        }),
       ),
     );
   }

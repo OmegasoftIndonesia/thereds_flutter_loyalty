@@ -32,60 +32,94 @@ class GamelistView extends GetView<GamelistController> {
         child: Column(
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               height: 50,
-              child: ListView.builder(
-                itemCount: 3,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 100,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Color(Constants.BGApp),
-                        border: Border.all(color: Color(Constants.mainColor)),
-                        borderRadius: BorderRadius.circular(20),
+              child: Obx(() {
+                return (controller.listRent.value.data == null)
+                    ? SizedBox()
+                    : ListView.builder(
+                  itemCount: controller.listRent.value.data!.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, index) {
+                    return InkWell(
+                      onTap: () {
+                        controller.selectIndex.value = index;
+                        controller.sortGame(
+                          controller
+                              .listRent
+                              .value
+                              .data![index]
+                              .kode!,
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Obx(() {
+                          return Container(
+                            width: 100,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: (controller.selectIndex.value == index)
+                                  ? Color(Constants.mainColor)
+                                  : Color(Constants.BGInput),
+                              border: Border.all(
+                                color: Color(Constants.mainColor),
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              controller
+                                  .listRent
+                                  .value
+                                  .data![index]
+                                  .noRentObject!,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                              ),
+                            ),
+                          );
+                        }),
                       ),
-                      child: Text(
-                        "PS 3",
-                        style: TextStyle(color: Colors.white, fontSize: 17),
-                      ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                );
+              }),
             ),
-            Expanded(
-              child: CarouselSlider(
-                items: controller.controllerHome.GameItem,
-                options: CarouselOptions(
-                  height: 170,
-                  aspectRatio: 16 / 9,
-                  viewportFraction: 0.8,
-                  initialPage: 0,
-                  enableInfiniteScroll: true,
-                  reverse: false,
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 3),
-                  autoPlayAnimationDuration: Duration(milliseconds: 800),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enlargeCenterPage: true,
-                  enlargeFactor: 0.3,
-                  scrollDirection: Axis.vertical,
+            Obx(() {
+              return Expanded(
+                child: CarouselSlider(
+                  items: controller.GameItem,
+                  options: CarouselOptions(
+                    height: 170,
+                    aspectRatio: 16 / 9,
+                    viewportFraction: 0.8,
+                    initialPage: 0,
+                    enableInfiniteScroll: true,
+                    reverse: false,
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 3),
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enlargeCenterPage: true,
+                    enlargeFactor: 0.3,
+                    scrollDirection: Axis.vertical,
+                  ),
                 ),
-              ),
-              // ListView.builder(
-              //     itemCount: controller.controllerHome.GameItem.length,
-              //     scrollDirection: Axis.vertical,
-              //     itemBuilder: (BuildContext context, index){
-              //       return Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: Image.network("${Constants.internetImage}${}"),
-              //       );
-              //     })
-            ),
+                // ListView.builder(
+                //     itemCount: controller.controllerHome.GameItem.length,
+                //     scrollDirection: Axis.vertical,
+                //     itemBuilder: (BuildContext context, index){
+                //       return Padding(
+                //         padding: const EdgeInsets.all(8.0),
+                //         child: Image.network("${Constants.internetImage}${}"),
+                //       );
+                //     })
+              );
+            }),
           ],
         ),
       ),

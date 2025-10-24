@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:thereds_flutter_loyalty/app/util/dialog_util.dart';
 import '../../../data/Constants.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/login_controller.dart';
@@ -72,7 +73,12 @@ class LoginView extends GetView<LoginController> {
                           height: 50,
                           child: TextButton(
                             onPressed: () {
-                              controller.cekLogin();
+                              if(controller.hp.text.isEmpty ||controller.hp.text == "" ){
+                                DialogUtil.show("No Hp anda kosong");
+                              }else{
+                                controller.cekLogin();
+                              }
+
                             },
                             child: Text(
                               "Login",

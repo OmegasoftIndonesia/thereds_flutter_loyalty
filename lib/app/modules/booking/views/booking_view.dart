@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:thereds_flutter_loyalty/app/data/NumberFormatter.dart';
 import 'package:thereds_flutter_loyalty/app/util/dialog_util.dart';
 
@@ -256,7 +257,7 @@ class BookingView extends GetView<BookingController> {
                                         color: Colors.white, fontSize: 15)
                                 ),
                                 TextSpan(
-                                    text: " ${NumberFormatter.currency(
+                                    text: "${NumberFormatter.currency(
                                         controller.total.value)}",
                                     style: TextStyle(color: Colors.white,
                                         fontSize: 20,
@@ -268,7 +269,14 @@ class BookingView extends GetView<BookingController> {
                       }),
                       InkWell(
                         onTap: () {
-                          Get.toNamed(Routes.PAYMENT);
+                          Get.toNamed(Routes.PAYMENT, arguments: {
+                            'total' : controller.total.value.toString(),
+                            'paket': controller.paket,
+                            'rentObject' : controller.kodeRent,
+                            'jamAwal': controller.jamAwal,
+                            'jamAkhir': controller.jamAkhir,
+                            'tglBooking': DateFormat('yyyy-MM-dd').format(controller.selectedDate.value!),
+                          });
                         },
                         child: Container(
                           width: 100,

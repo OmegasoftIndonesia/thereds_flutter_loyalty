@@ -1,7 +1,7 @@
 class ListRentObjectResponse {
   String? status;
   String? message;
-  List<Data>? data;
+  List<DataRent>? data;
 
   ListRentObjectResponse({this.status, this.message, this.data});
 
@@ -9,9 +9,9 @@ class ListRentObjectResponse {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <DataRent>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new DataRent.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class ListRentObjectResponse {
   }
 }
 
-class Data {
+class DataRent {
   String? kode;
   String? noRentObject;
   String? grup;
@@ -39,7 +39,7 @@ class Data {
   String? isUsed;
   String? minOrderWeekend;
 
-  Data(
+  DataRent(
       {this.kode,
         this.noRentObject,
         this.grup,
@@ -51,7 +51,7 @@ class Data {
         this.isUsed,
         this.minOrderWeekend});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  DataRent.fromJson(Map<String, dynamic> json) {
     kode = json['Kode'];
     noRentObject = json['NoRentObject'];
     grup = json['Grup'];

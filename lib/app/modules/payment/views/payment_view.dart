@@ -51,24 +51,34 @@ class PaymentView extends GetView<PaymentController> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          width:MediaQuery.of(context).size.width,
-                          height:50,
-                          alignment:Alignment.center,
+                          width: MediaQuery.of(context).size.width,
+                          height: 50,
+                          alignment: Alignment.center,
                           padding: EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: RadioListTile(
                             activeColor: Color(Constants.mainColor),
-                            dense: true, // biar rapat
-                            visualDensity: VisualDensity(horizontal: -4, vertical: -4), // kurangin padding
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 8), // padding dalam
-                            controlAffinity: ListTileControlAffinity.trailing, // radio di kanan
-                            title: Text("Wallet", style: TextStyle(
-                                fontWeight: FontWeight.bold
-                            )),
-                            value: 'Option 1',
+                            dense: true,
+                            // biar rapat
+                            visualDensity: VisualDensity(
+                              horizontal: -4,
+                              vertical: -4,
+                            ),
+                            // kurangin padding
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                            ),
+                            // padding dalam
+                            controlAffinity: ListTileControlAffinity.trailing,
+                            // radio di kanan
+                            title: Text(
+                              "Wallet",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            value: 'wallet',
                             groupValue: controller.selectedValue.value,
                             onChanged: (value) {
                               controller.selectedValue.value = value!;
@@ -84,24 +94,34 @@ class PaymentView extends GetView<PaymentController> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          width:MediaQuery.of(context).size.width,
-                          height:50,
-                          alignment:Alignment.center,
+                          width: MediaQuery.of(context).size.width,
+                          height: 50,
+                          alignment: Alignment.center,
                           padding: EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: RadioListTile(
                             activeColor: Color(Constants.mainColor),
-                            dense: true, // biar rapat
-                            visualDensity: VisualDensity(horizontal: -4, vertical: -4), // kurangin padding
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 8), // padding dalam
-                            controlAffinity: ListTileControlAffinity.trailing, // radio di kanan
-                            title: Text("QRIS", style: TextStyle(
-                              fontWeight: FontWeight.bold
-                            ),),
-                            value: 'Option 2',
+                            dense: true,
+                            // biar rapat
+                            visualDensity: VisualDensity(
+                              horizontal: -4,
+                              vertical: -4,
+                            ),
+                            // kurangin padding
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                            ),
+                            // padding dalam
+                            controlAffinity: ListTileControlAffinity.trailing,
+                            // radio di kanan
+                            title: Text(
+                              "QRIS",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            value: 'qris',
                             groupValue: controller.selectedValue.value,
                             onChanged: (value) {
                               controller.selectedValue.value = value!;
@@ -117,23 +137,33 @@ class PaymentView extends GetView<PaymentController> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          width:MediaQuery.of(context).size.width,
-                          height:50,
+                          width: MediaQuery.of(context).size.width,
+                          height: 50,
                           padding: EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: RadioListTile(
                             activeColor: Color(Constants.mainColor),
-                            dense: true, // biar rapat
-                            visualDensity: VisualDensity(horizontal: -4, vertical: -4), // kurangin padding
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 8), // padding dalam
-                            controlAffinity: ListTileControlAffinity.trailing, // radio di kanan
-                            title: Text("Gift", style: TextStyle(
-                                fontWeight: FontWeight.bold
-                            )),
-                            value: 'Option 3',
+                            dense: true,
+                            // biar rapat
+                            visualDensity: VisualDensity(
+                              horizontal: -4,
+                              vertical: -4,
+                            ),
+                            // kurangin padding
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                            ),
+                            // padding dalam
+                            controlAffinity: ListTileControlAffinity.trailing,
+                            // radio di kanan
+                            title: Text(
+                              "Gift",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            value: 'gift',
                             groupValue: controller.selectedValue.value,
                             onChanged: (value) {
                               controller.selectedValue.value = value!;
@@ -151,23 +181,50 @@ class PaymentView extends GetView<PaymentController> {
                 }),
               ),
               Spacer(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: RichText(
-                  text: TextSpan(
-                      children:[
+              Obx(() {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
                         TextSpan(
-                            text: "Total ", style: TextStyle(color: Colors.white, fontSize: 15)
+                          text: "Total ",
+                          style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                         TextSpan(
-                            text: " ${NumberFormatter.currency(45000)}", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)
+                          text:
+                              "${NumberFormatter.currency(double.parse(controller.total.value).toInt())}",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ]
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
               InkWell(
-                onTap: (){
+                onTap: () {
+                  if (controller.selectedValue.value == "qris") {
+                    Get.toNamed(
+                      Routes.QRIS,
+                      arguments: {
+                        'purpose': "booking",
+                        "total": controller.total.value,
+                        'paket': controller.dataArg['paket'],
+                        'rentObject': controller.dataArg['rentObject'],
+                        'jamAwal': controller.dataArg['jamAwal'],
+                        'jamAkhir': controller.dataArg['jamAkhir'],
+                        'tglBooking': controller.dataArg['tglBooking']
+                      },
+                    );
+                  }else if(controller.selectedValue.value == "wallet"){
+                    controller.insertCart2("Uang Muka");
+                  }else if(controller.selectedValue.value == "gift"){
+                    controller.insertCart2("Point");
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -176,18 +233,20 @@ class PaymentView extends GetView<PaymentController> {
                     height: 50,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                        color: Color(Constants.mainColor),
-                        borderRadius: BorderRadius.circular(10)
+                      color: Color(Constants.mainColor),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Text("Pay", style: TextStyle(
+                    child: Text(
+                      "Pay",
+                      style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20
-                    ),
+                        fontSize: 20,
+                      ),
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

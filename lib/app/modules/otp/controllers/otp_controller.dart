@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:thereds_flutter_loyalty/app/data/request/aboutRequest.dart';
 import 'package:thereds_flutter_loyalty/app/data/request/getKodePelangganRequest.dart';
 import 'package:thereds_flutter_loyalty/app/data/request/sendOTPRequest.dart';
 import 'package:thereds_flutter_loyalty/app/data/request/validateOTPRequest.dart';
@@ -43,8 +44,20 @@ class OtpController extends GetxController {
         util.putString(PreferencesUtil.kota, data.kota!);
         util.putString(PreferencesUtil.tglLahir, data.tglLahir!);
         util.putString(PreferencesUtil.fotoProfil, data.fotoOrangKTP!);
-        await getKodePelangganRequest.connectionAPI(data.noHP.toString()).then((onValue){
+        await getKodePelangganRequest.connectionAPI(data.noHP.toString()).then((onValue)async{
           util.putString(PreferencesUtil.kodePelanggan, onValue[0].kode!);
+
+          await aboutRequest.connectionAPI().then((onValue){
+            util.putString(PreferencesUtil.whatsApp, onValue.wa!);
+            if(data.pKP == "0"){
+              if(onValue.isPPN != "0"){
+                util.putString(PreferencesUtil.ppn, onValue.pajakPOSRetail!);
+              }
+            }else{
+              util.putString(PreferencesUtil.ppn, onValue.pajakPOSRetail!);
+            }
+          });
+
           Get.offAllNamed(Routes.HOME);
         });
 

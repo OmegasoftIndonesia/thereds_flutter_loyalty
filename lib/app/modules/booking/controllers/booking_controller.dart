@@ -22,38 +22,16 @@ class BookingController extends GetxController {
   RxInt total = 0.obs;
   RxnInt selectIndex = RxnInt();
   Rx<ListRentObjectResponse> listRentObject = ListRentObjectResponse().obs;
-
+  DataPaket? paket;
   List<DropdownMenuItem<String>> tempList = [];
-
+  DataRent? kodeRent;
+  String? jamAwal;
+  String? jamAkhir;
   getPaketByRentObjectResponse? paketList;
   RxList<Map<String, dynamic>> times = <Map<String, dynamic>>[
 
   ].obs;
 
-  // {"number": 0, "time": "00.00", "status": ""},
-  // {"number": 1, "time": "01.00", "status": ""},
-  // {"number": 2, "time": "02.00", "status": ""},
-  // {"number": 3, "time": "03.00", "status": ""},
-  // {"number": 4, "time": "04.00", "status": ""},
-  // {"number": 5, "time": "05.00", "status": ""},
-  // {"number": 6, "time": "06.00", "status": ""},
-  // {"number": 7, "time": "07.00", "status": ""},
-  // {"number": 8, "time": "08.00", "status": ""},
-  // {"number": 9, "time": "09.00", "status": ""},
-  // {"number": 10, "time": "10.00", "status": ""},
-  // {"number": 11, "time": "11.00", "status": ""},
-  // {"number": 12, "time": "12.00", "status": ""},
-  // {"number": 13, "time": "13.00", "status": ""},
-  // {"number": 14, "time": "14.00", "status": ""},
-  // {"number": 15, "time": "15.00", "status": ""},
-  // {"number": 16, "time": "16.00", "status": ""},
-  // {"number": 17, "time": "17.00", "status": ""},
-  // {"number": 18, "time": "18.00", "status": ""},
-  // {"number": 19, "time": "19.00", "status": ""},
-  // {"number": 20, "time": "20.00", "status": ""},
-  // {"number": 21, "time": "21.00", "status": ""},
-  // {"number": 22, "time": "22.00", "status": ""},
-  // {"number": 23, "time": "23.00", "status": ""},
   Color getStatusColor(String status) {
     switch (status) {
       case "Booked":
@@ -83,6 +61,7 @@ class BookingController extends GetxController {
     DialogUtil.loadingDialog();
     await getPaketByRentObjectRequest.connectionAPI(rentObject).then((onValue) {
       DialogUtil.closeDialog();
+      kodeRent = listRentObject.value.data!.firstWhere((test) => test.kode == rentObject);
       tempList.clear();
       dropdownPaket.clear();
       paketList = onValue;
@@ -98,6 +77,7 @@ class BookingController extends GetxController {
         });
         dropdownPaket.assignAll(tempList);
         dropdownPaketValue.value = onValue.data![0].kode!;
+        paket = onValue.data![0];
         selectedpaket.value = double.parse(onValue.data![0].duration!).toInt();
         total.value =double.parse(onValue.data![0].nominal!).toInt();
       }
@@ -126,6 +106,7 @@ class BookingController extends GetxController {
       var durasi= paketList!.data!.firstWhere((test)=>test.kode == value);
       selectedpaket.value = double.parse(durasi.duration!).toInt();
       total.value = double.parse(durasi.nominal!).toInt();
+      paket = durasi;
     }
   }
 
@@ -152,10 +133,14 @@ class BookingController extends GetxController {
       } else {
        //int idx = tempMap.indexWhere((test) => test['number'] == i);
         tempMap[i]['StatusBooking'] = "Selected";
+        jamAwal = "${DateFormat("yyyy-MM-dd").format(selectedDate.value!)} ${times[start]['Jam']}";
+        jamAkhir = "${DateFormat("yyyy-MM-dd").format(selectedDate.value!)} ${times[start+selectedpaket.value]["Jam"]}";
         successCtr++;
       }
     }
     print("paket: ${selectedpaket.value}");
+    print("jamAwal: $jamAwal");
+    print("jamAkhir: $jamAkhir");
     if (successCtr == selectedpaket.value) {
       times.assignAll(tempMap);
       times.refresh();

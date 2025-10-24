@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:thereds_flutter_loyalty/app/data/response/getGopayTransResponse.dart';
 
+import '../../util/injector.dart';
+import '../../util/shared_prefs.dart';
 import '../Constants.dart';
 import '../url.dart';
 
@@ -29,7 +31,7 @@ class getGopayTransRequest {
 
       dio.options.headers['Authorization']=Constants.apiToken;
       dio.options.headers['Uid']="tZD7CG3idLxrABc6KPpEeVqgXkyawjlH";
-      dio.options.headers['server_key'] = "Mid-server-alHWl479Kd3suVEmZAoCDUim";
+      dio.options.headers['server_key'] = util.getString(PreferencesUtil.serverKeyGopay);
 
       dio.options.contentType = "application/x-www-form-urlencoded";
       print("URL: $URL");

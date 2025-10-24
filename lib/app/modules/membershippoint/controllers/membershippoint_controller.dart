@@ -14,7 +14,7 @@ class MembershippointController extends GetxController {
   RxString level = "".obs;
   RxString Nextlevel = "".obs;
   RxString totalSpending="".obs;
-  RxString nextReward = "".obs;
+  RxString nextReward = "0".obs;
   RxString sisaHour = "".obs;
   PreferencesUtil util = PreferencesUtil();
 

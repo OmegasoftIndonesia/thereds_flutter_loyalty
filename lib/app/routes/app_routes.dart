@@ -20,6 +20,7 @@ abstract class Routes {
   static const SPECIAL_OFFER = _Paths.SPECIAL_OFFER;
   static const BOOKING = _Paths.BOOKING;
   static const PAYMENT = _Paths.PAYMENT;
+  static const BOOKING_HISTORY = _Paths.BOOKING_HISTORY;
 }
 
 abstract class _Paths {
@@ -41,4 +42,5 @@ abstract class _Paths {
   static const SPECIAL_OFFER = '/special-offer';
   static const BOOKING = '/booking';
   static const PAYMENT = '/payment';
+  static const BOOKING_HISTORY = '/booking-history';
 }
