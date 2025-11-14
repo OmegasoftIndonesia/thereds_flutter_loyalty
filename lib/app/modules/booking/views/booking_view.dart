@@ -242,64 +242,71 @@ class BookingView extends GetView<BookingController> {
                       ]
                   ),
                 ),
-                Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Obx(() {
-                        return RichText(
-                          text: TextSpan(
-                              children: [
-                                TextSpan(
-                                    text: "Total ",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 15)
-                                ),
-                                TextSpan(
-                                    text: "${NumberFormatter.currency(
-                                        controller.total.value)}",
-                                    style: TextStyle(color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold)
-                                ),
-                              ]
-                          ),
-                        );
-                      }),
-                      InkWell(
-                        onTap: () {
-                          Get.toNamed(Routes.PAYMENT, arguments: {
-                            'total' : controller.total.value.toString(),
-                            'paket': controller.paket,
-                            'rentObject' : controller.kodeRent,
-                            'jamAwal': controller.jamAwal,
-                            'jamAkhir': controller.jamAkhir,
-                            'tglBooking': DateFormat('yyyy-MM-dd').format(controller.selectedDate.value!),
-                          });
-                        },
-                        child: Container(
-                          width: 100,
-                          height: 50,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Color(Constants.mainColor),
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Text("Next", style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20
-                          ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                )
+
               ],
             ),
           ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Obx(() {
+              return RichText(
+                text: TextSpan(
+                    children: [
+                      TextSpan(
+                          text: "Total ",
+                          style: TextStyle(
+                              color: Colors.white, fontSize: 15)
+                      ),
+                      TextSpan(
+                          text: "${NumberFormatter.currency(
+                              controller.total.value)}",
+                          style: TextStyle(color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold)
+                      ),
+                    ]
+                ),
+              );
+            }),
+            InkWell(
+              onTap: () {
+                if( controller.jamAwal == null|| controller.jamAkhir == null){
+                  DialogUtil.show("Anda belum memilih jam");
+                }else{
+                  Get.toNamed(Routes.PAYMENT, arguments: {
+                    'total' : controller.total.value.toString(),
+                    'paket': controller.paket,
+                    'rentObject' : controller.kodeRent,
+                    'jamAwal': controller.jamAwal,
+                    'jamAkhir': controller.jamAkhir,
+                    'tglBooking': DateFormat('yyyy-MM-dd').format(controller.selectedDate.value!),
+                  });
+                }
+
+              },
+              child: Container(
+                width: 100,
+                height: 50,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: Color(Constants.mainColor),
+                    borderRadius: BorderRadius.circular(10)
+                ),
+                child: Text("Next", style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20
+                ),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );

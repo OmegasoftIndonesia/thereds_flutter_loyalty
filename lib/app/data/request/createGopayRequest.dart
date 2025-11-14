@@ -39,12 +39,15 @@ class createGopayRequest {
       dio.options.headers['server_key'] = util.getString(PreferencesUtil.serverKeyGopay);
 
       dio.options.contentType = "application/x-www-form-urlencoded";
-      print("URL: $URL");
-      print(
-          "${request.toJson()}");
+
+
       Response response = await dio.post(URL, data: request.toJson());
 
 
+      print("URL: $URL");
+      print(response.requestOptions.headers);
+      print(
+          "${request.toJson()}");
       print(response.data);
 
       return createGopayResponse.fromJson(response.data);

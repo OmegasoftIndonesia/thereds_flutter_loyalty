@@ -46,7 +46,7 @@ class insertpiutangdraftsoRequest {
     return data;
   }
 
-  static Future<insertpiutangdraftsoResponse> connectionAPI(String kodePay, kodeNota, amount) async {
+  static Future<insertpiutangdraftsoResponse> connectionAPI(String kodePay, kodeNota, amount, bank) async {
     Dio dio = Dio();
 
     try {
@@ -58,7 +58,7 @@ class insertpiutangdraftsoRequest {
       request.cust = util.getString(PreferencesUtil.kodePelanggan);
       request.kodenota = kodeNota;
       request.kodepayment = kodePay;
-      request.bank="GOPAY";
+      request.bank=bank;
 
       dio.options.headers = {};
       dio.options.contentType = "application/x-www-form-urlencoded";

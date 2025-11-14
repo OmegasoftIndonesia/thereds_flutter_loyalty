@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:thereds_flutter_loyalty/app/data/request/ListRentObjectRequest.dart';
@@ -27,10 +28,20 @@ class GamelistController extends GetxController {
       listRent.value = onValue;
       await getGameListByRentObjectRequest.connectionAPI().then((onValueGame) {
         dataGameTemp.addAll(onValueGame.data!);
+
         onValueGame.data!.forEach((action) {
-          GameItem.assign(
-            Image.network("${Constants.internetImage}${action.gambar}"),
-          );
+          print("imageGame: ${Constants.internetImage}${action.gambar}");
+          if(action.aktif == "1"){
+            GameItem.add(
+              Image.network(
+                "${Constants.internetImage}${action.gambar}",
+                errorBuilder: (BuildContext context, o, s) {
+                  return Icon(Icons.error_outline, color: Colors.white);
+                },
+              ),
+            );
+          }
+
         });
         DialogUtil.closeDialog();
       });
@@ -43,9 +54,18 @@ class GamelistController extends GetxController {
         .toList();
     GameItem.clear();
     qResult.forEach((action) {
-      GameItem.assign(
-        Image.network("${Constants.internetImage}${action.gambar}"),
-      );
+
+      if (action.aktif == "1") {
+        print("imageGame: ${action.toJson()}");
+        GameItem.add(
+          Image.network(
+            "${Constants.internetImage}${action.gambar}",
+            errorBuilder: (BuildContext context, o, s) {
+              return Icon(Icons.error_outline, color: Colors.white);
+            },
+          ),
+        );
+      }
     });
   }
 

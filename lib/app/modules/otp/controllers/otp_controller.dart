@@ -52,6 +52,8 @@ class OtpController extends GetxController {
             if(data.pKP == "0"){
               if(onValue.isPPN != "0"){
                 util.putString(PreferencesUtil.ppn, onValue.pajakPOSRetail!);
+              }else{
+                util.putString(PreferencesUtil.ppn, "0");
               }
             }else{
               util.putString(PreferencesUtil.ppn, onValue.pajakPOSRetail!);

@@ -23,27 +23,32 @@ class HomeController extends GetxController {
   RxList<Widget> promoItem = <Widget>[].obs;
   PreferencesUtil util = PreferencesUtil();
   RxList<Widget> GameItem = <Widget>[].obs;
-  Rx<getMemberLevelResponse> memberLevel= getMemberLevelResponse().obs;
+  Rx<getMemberLevelResponse> memberLevel = getMemberLevelResponse().obs;
   RxString level = "".obs;
   RxString pointMember = "0".obs;
   RxString walletMember = "0".obs;
-  void getMemberLevel()async{
-    await getMemberLevelRequest.connectionAPI().then((onValue){
-      level.value = (onValue.data!.length<=0)?"Level 0":onValue.data![0].levelName!;
+
+  void getMemberLevel() async {
+    await getMemberLevelRequest.connectionAPI().then((onValue) {
+      level.value = (onValue.data!.length <= 0)
+          ? "Level 0"
+          : onValue.data![0].levelName!;
       memberLevel.value = onValue;
     });
   }
 
-  void getMemberPoint()async{
-    await ListHistoryPointWithDepositSORequest.connectionAPI(1).then((onValue){
+  void getMemberPoint() async {
+    await ListHistoryPointWithDepositSORequest.connectionAPI(1).then((onValue) {
       List<DataPoint> data = onValue.data!.reversed.toList();
       pointMember.value = data[0].balance!;
     });
   }
 
-  void getMemberWallet()async{
-    await ListHistoryDepositWithDepositSORequest.connectionAPI(1).then((onValue){
-     List<DataSaldo> data= onValue.data!.reversed.toList();
+  void getMemberWallet() async {
+    await ListHistoryDepositWithDepositSORequest.connectionAPI(1).then((
+      onValue,
+    ) {
+      List<DataSaldo> data = onValue.data!.reversed.toList();
       walletMember.value = data[0].depositBalance!;
     });
   }
@@ -51,7 +56,7 @@ class HomeController extends GetxController {
   void getPromo() async {
     await promoRequest.connectionAPI().then((onValue) {
       onValue.forEach((action) {
-        promoItem.assign(
+        promoItem.add(
           InkWell(
             onTap: () {
               Get.toNamed(
@@ -59,7 +64,12 @@ class HomeController extends GetxController {
                 arguments: {"image": action.link, "detail": action.isi},
               );
             },
-            child: Image.network("${action.link}"),
+            child: Image.network(
+              "${action.link}",
+              errorBuilder: (BuildContext context, o, s) {
+                return Icon(Icons.error_outline, color: Colors.white);
+              },
+            ),
           ),
         );
       });
@@ -67,25 +77,36 @@ class HomeController extends GetxController {
   }
 
   void getGameList() async {
+    GameItem.clear();
     await getGameListRequest.connectionAPI().then((onValue) {
       onValue.data!.forEach((action) {
-        GameItem.assign(
-          Image.network("${Constants.internetImage}${action.gambar}")
-        );
+        print("imageGame: ${Constants.internetImage}${action.gambar}");
+        if(action.aktif == "1"){
+          GameItem.add(
+            Image.network(
+              "${Constants.internetImage}${action.gambar}",
+              errorBuilder: (BuildContext context, o, s) {
+                return Icon(Icons.error_outline, color: Colors.white);
+              },
+            ),
+          );
+        }
+
       });
     });
   }
 
-  void getServerKey() async{
-    await paymenttypeRequest.connectionAPI().then((onValue){
-      if(onValue.status == 'success'){
-        onValue.data!.forEach((action){
+  void getServerKey() async {
+    await paymenttypeRequest.connectionAPI().then((onValue) {
+      if (onValue.status == 'success') {
+        onValue.data!.forEach((action) {
           if (action.jenis!.toLowerCase().contains('gopay')) {
-            util.putString(PreferencesUtil.serverKeyGopay,
-                action.payParam!.substring(11).replaceAll(';', ''));
+            util.putString(
+              PreferencesUtil.serverKeyGopay,
+              action.payParam!.substring(11).replaceAll(';', ''),
+            );
           }
         });
-
       }
     });
   }
@@ -98,7 +119,7 @@ class HomeController extends GetxController {
     getMemberWallet();
     getServerKey();
   }
-  
+
   @override
   void onInit() {
     super.onInit();
@@ -108,7 +129,7 @@ class HomeController extends GetxController {
   void onReady() {
     super.onReady();
     DialogUtil.loadingDialog();
-    refresh().then((onValue){
+    refresh().then((onValue) {
       DialogUtil.closeDialog();
     });
   }

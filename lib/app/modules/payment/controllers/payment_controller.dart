@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
+import 'package:thereds_flutter_loyalty/app/data/request/approvedDraftSORequest.dart';
 import 'package:thereds_flutter_loyalty/app/data/request/cart2Request.dart';
+import 'package:thereds_flutter_loyalty/app/data/request/insertpiutangdraftsoRequest.dart';
 import 'package:thereds_flutter_loyalty/app/modules/booking/controllers/booking_controller.dart';
 import 'package:thereds_flutter_loyalty/app/routes/app_pages.dart';
 import 'package:thereds_flutter_loyalty/app/util/dialog_util.dart';
@@ -44,30 +46,39 @@ class PaymentController extends GetxController {
   void insertCart2(String bentukDana) async {
     DialogUtil.loadingDialog();
     bool isValid = false;
-    if(bentukDana == 'Uang Muka'){
-
-      await ListHistoryDepositWithDepositSORequest.connectionAPI(1).then((onValue){
-        List<DataSaldo> data=onValue.data!.reversed.toList();
-        if(double.parse(data[0].depositBalance!).toInt() > double.parse(total.value).toInt()){
+    if (bentukDana == 'Uang Muka') {
+      await ListHistoryDepositWithDepositSORequest.connectionAPI(1).then((
+        onValue,
+      ) {
+        List<DataSaldo> data = onValue.data!.reversed.toList();
+        if (double.parse(data[0].depositBalance!).toInt() >
+            double.parse(total.value).toInt()) {
           isValid = true;
-        }else{
+        } else {
           DialogUtil.closeDialog();
-          DialogUtil.show("Saldo wallet anda tidak cukup untuk melakukan pembayaran");
+          DialogUtil.show(
+            "Saldo wallet anda tidak cukup untuk melakukan pembayaran",
+          );
         }
       });
-    }else if(bentukDana == "Point"){
-      await ListHistoryPointWithDepositSORequest.connectionAPI(1).then((onValue){
+    } else if (bentukDana == "Point") {
+      await ListHistoryPointWithDepositSORequest.connectionAPI(1).then((
+        onValue,
+      ) {
         List<DataPoint> data = onValue.data!.reversed.toList();
-        if(double.parse(data[0].balance!).toInt() > double.parse(total.value).toInt()){
+        if (double.parse(data[0].balance!).toInt() >
+            double.parse(total.value).toInt()) {
           isValid = true;
-        }else{
+        } else {
           DialogUtil.closeDialog();
-          DialogUtil.show("RedPoint anda tidak cukup untuk melakukan pembayaran");
+          DialogUtil.show(
+            "RedPoint anda tidak cukup untuk melakukan pembayaran",
+          );
         }
       });
     }
 
-    if(isValid){
+    if (isValid) {
       Detail newDetail = Detail();
       newDetail.productUid = dataArg['paket'].jenisPekerjaan;
       newDetail.note = "";
@@ -84,27 +95,43 @@ class PaymentController extends GetxController {
 
       cart2Request
           .connectionAPI(
-        newDetail,
-        double.parse(total.value).toInt(),
-        dataArg['rentObject'].kode,
-        dataArg['paket'].kode,
-        dataArg['jamAwal'],
-        dataArg['jamAkhir'],
-        dataArg['tglBooking'].toString(),
-        dataArg['paket'].jenisPekerjaan,
-        bentukDana,
-      )
+            newDetail,
+            double.parse(total.value).toInt(),
+            dataArg['rentObject'].kode,
+            dataArg['paket'].kode,
+            dataArg['jamAwal'],
+            dataArg['jamAkhir'],
+            dataArg['tglBooking'].toString(),
+            dataArg['paket'].jenisPekerjaan,
+            bentukDana,
+          )
           .then((cartResp) async {
-        if (cartResp.status == "success") {
-          DialogUtil.closeDialog();
-          Get.toNamed(
-            Routes.PAYMENTSUCCESS,
-            arguments: {"nominal": total.value, "point": "0", "bentukDana": bentukDana, "purpose": "booking"},
-          );
-        }
-      });
+            if (cartResp.status == "success") {
+              await insertpiutangdraftsoRequest
+                  .connectionAPI(
+                    cartResp.kodenota!,
+                    cartResp.kodenota,
+                    double.parse(total.value).toInt().toString(),bentukDana
+                  )
+                  .then((onValueInsertPiutang) async {
+                    await approvedraftsoRequest
+                        .connectionAPI(cartResp.kodenota!)
+                        .then((onValueapprove) {
+                          DialogUtil.closeDialog();
+                          Get.toNamed(
+                            Routes.PAYMENTSUCCESS,
+                            arguments: {
+                              "nominal": total.value,
+                              "point": "0",
+                              "bentukDana": bentukDana,
+                              "purpose": "booking",
+                            },
+                          );
+                        });
+                  });
+            }
+          });
     }
-
   }
 
   @override

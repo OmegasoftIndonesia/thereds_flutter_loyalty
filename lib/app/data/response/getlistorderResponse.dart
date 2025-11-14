@@ -21,6 +21,9 @@ class getlistorderResponse {
   String? isBooking;
   String? jamMulai;
   String? jamAkhir;
+  String? ketRentObject;
+  String? ketTipeRentObject;
+  String? durasiMenit;
   String? custName;
 
   getlistorderResponse(
@@ -46,6 +49,9 @@ class getlistorderResponse {
         this.isBooking,
         this.jamMulai,
         this.jamAkhir,
+        this.ketRentObject,
+        this.ketTipeRentObject,
+        this.durasiMenit,
         this.custName});
 
   getlistorderResponse.fromJson(Map<String, dynamic> json) {
@@ -71,10 +77,11 @@ class getlistorderResponse {
     isBooking = json['IsBooking'];
     jamMulai = json['JamMulai'];
     jamAkhir = json['JamAkhir'];
+    ketRentObject = json['KetRentObject'];
+    ketTipeRentObject = json['KetTipeRentObject'];
+    durasiMenit = json['DurasiMenit'];
     custName = json['CustName'];
   }
-
-
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -100,6 +107,9 @@ class getlistorderResponse {
     data['IsBooking'] = this.isBooking;
     data['JamMulai'] = this.jamMulai;
     data['JamAkhir'] = this.jamAkhir;
+    data['KetRentObject'] = this.ketRentObject;
+    data['KetTipeRentObject'] = this.ketTipeRentObject;
+    data['DurasiMenit'] = this.durasiMenit;
     data['CustName'] = this.custName;
     return data;
   }
@@ -107,3 +117,4 @@ class getlistorderResponse {
     return jsonList.map((e) => getlistorderResponse.fromJson(e)).toList();
   }
 }
+

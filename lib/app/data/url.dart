@@ -27,6 +27,7 @@ class URLAPI{
   static String getRoomSchedule = "$baseURL${newDev}/getRoomSchedule";
   static String createGopay = "https://api-prod.omegasoft.co.id/v3/payment/gopay/transaction";
   static String getGopay = "https://api-prod.omegasoft.co.id/v3/payment/gopay/gettransaction";
+  static String cancelGopay = "https://api-prod.omegasoft.co.id/v3/payment/gopay/cancel2";
   static String insertpiutangdraftso = "$baseURL${newDev}/insertpiutangdraftso";
   static String ListHistoryPointWithDepositSO = "$baseURL${newDev}/ListHistoryPointWithDepositSO";
   static String about = "$baseURL${newDev}/about";
@@ -34,7 +35,7 @@ class URLAPI{
   static String approvedraftso = "$baseURL${newDev}/approvedraftso";
   static String ListHistoryDepositWithDepositSO = "$baseURL${newDev}/ListHistoryDepositWithDepositSO";
   static String getGameListByRentObject = "$baseURL${newDev}/getGameListByRentObject";
-  static String paymenttype = "$baseURL${newDev}/paymenttype";
+  static String paymenttype = "$baseURL/apinew/paymenttype";
   static String getlistorder = "$baseURL${newDev}/getlistorder";
   static String detail_listorder = "$baseURL${newDev}/detail_listorder";
 }

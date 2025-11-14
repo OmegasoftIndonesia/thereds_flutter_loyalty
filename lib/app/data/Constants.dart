@@ -13,4 +13,5 @@ class Constants{
   static const version = "1.0.1";
   static const buildCode = "1";
   static const apiKeyWA = "0ca6f5b8-8d9e-11ee-b33e-67133fcfe4af";
+  static const GopayUID= "tZD7CG3idLxrABc6KPpEeVqgXkyawjlH";
 }

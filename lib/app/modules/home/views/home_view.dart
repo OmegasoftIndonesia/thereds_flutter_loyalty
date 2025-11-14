@@ -19,6 +19,7 @@ class HomeView extends GetView<HomeController> {
       backgroundColor: Color(Constants.BGApp),
       appBar: AppBar(
         backgroundColor: Color(Constants.BGApp),
+        leadingWidth: 80,
         leading: CircleAvatar(
           backgroundImage: NetworkImage(
             Constants.internetImage +
@@ -340,34 +341,37 @@ class HomeView extends GetView<HomeController> {
                       ),
                     );
                   }),
-                  SizedBox(height: 20),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Color(Constants.mainColor),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    child: TextButton(
-                      onPressed: () {
-                        Get.toNamed(Routes.BOOKING);
-                      },
-                      child: Text(
-                        "Booking",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
             ),
           ),
         ),
       ),
+      bottomNavigationBar: SafeArea(child:  Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Color(Constants.mainColor),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          width: MediaQuery.of(context).size.width,
+          height: 50,
+          child: TextButton(
+            onPressed: () {
+              Get.toNamed(Routes.BOOKING);
+            },
+            child: Text(
+              "Booking",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          ),
+        ),
+      )),
     );
   }
 }

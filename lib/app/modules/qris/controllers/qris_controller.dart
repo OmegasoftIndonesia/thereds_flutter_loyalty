@@ -7,11 +7,14 @@ import 'package:thereds_flutter_loyalty/app/data/request/approvedDraftSORequest.
 import 'package:thereds_flutter_loyalty/app/data/request/cart2Request.dart';
 import 'package:thereds_flutter_loyalty/app/data/request/createGopayRequest.dart';
 import 'package:thereds_flutter_loyalty/app/data/request/getGopayTransRequest.dart';
+import 'package:thereds_flutter_loyalty/app/data/request/gopayCancel2Request.dart';
 import 'package:thereds_flutter_loyalty/app/data/request/insertpiutangdraftsoRequest.dart';
 import 'package:thereds_flutter_loyalty/app/modules/topup/controllers/topup_controller.dart';
 import 'package:thereds_flutter_loyalty/app/util/dialog_util.dart';
 
 import '../../../routes/app_pages.dart';
+import '../../home/controllers/home_controller.dart';
+import '../../home/views/home_view.dart';
 
 class QrisController extends GetxController {
   //TODO: Implement QrisController
@@ -24,6 +27,7 @@ class QrisController extends GetxController {
   var isDownloading = false.obs;
   var filePath = ''.obs;
   var savedToGallery = false.obs;
+  HomeController homeController = Get.find<HomeController>();
 
   void createGopay() async {
     DialogUtil.loadingDialog();
@@ -42,78 +46,101 @@ class QrisController extends GetxController {
       if (onValue.data!.transactionStatus!.toLowerCase() == "pending" ||
           onValue.data!.transactionStatus!.toLowerCase() == "undefined") {
         checkPayment(code);
-      } else {
+      } else if(onValue.data!.transactionStatus!.toLowerCase() != "cancel") {
         insertPiutangDraftSO(code);
       }
     });
   }
 
-  void insertPiutangDraftSO(String kodePay) async {
-    await insertpiutangdraftsoRequest
-        .connectionAPI(kodePay, kodePay, dataArgs["total"])
-        .then((onValue) {
-          if (onValue.status!.toLowerCase() == "success") {
-            if (dataArgs['purpose'] == "topup") {
-              Get.offNamed(
-                Routes.PAYMENTSUCCESS,
-                arguments: {
-                  "nominal": dataArgs["total"],
-                  "point": dataArgs["point"],
-                  "bentukDana": "QRIS",
-                  "purpose": dataArgs['purpose'],
-                },
-              );
-            } else if (dataArgs['purpose'] == "booking") {
-              Detail newDetail = Detail();
-              newDetail.productUid = dataArgs['paket'].jenisPekerjaan;
-              newDetail.note = "";
-              newDetail.quantity = 1;
-              newDetail.amount = double.parse(
-                dataArgs['paket'].nominal,
-              ).toInt();
-              newDetail.disc2 = 0;
-              newDetail.disc3 = 0;
-              newDetail.discvaluepost = 0;
-              newDetail.tipe = "nonstok";
-              newDetail.satuan = "";
-              newDetail.paket = "_";
-              newDetail.jmlpaket = 1;
-              newDetail.rasio = 1;
+  void cancelGopayPayment() async{
+    DialogUtil.loadingDialog();
+    await gopayCancel2Request.connectionAPI(kodePay!).then((onValue){
 
-              cart2Request
-                  .connectionAPI(
-                    newDetail,
-                    double.parse(dataArgs["total"]).toInt(),
-                    dataArgs['rentObject'].kode,
-                    dataArgs['paket'].kode,
-                    dataArgs['jamAwal'],
-                    dataArgs['jamAkhir'],
-                    dataArgs['tglBooking'].toString(),
-                    dataArgs['paket'].jenisPekerjaan,
-                    "QRIS",
-                  )
-                  .then((cartResp) async {
-                    if (cartResp.status == "success") {
-                      await approvedraftsoRequest
-                          .connectionAPI(cartResp.kodenota!)
-                          .then((onValue) {
-                            if (onValue.status == "success") {
-                              Get.offNamed(
-                                Routes.PAYMENTSUCCESS,
-                                arguments: {
-                                  "nominal": dataArgs["total"],
-                                  "point": "0",
-                                  "bentukDana": "QRIS",
-                                  "purpose": dataArgs['purpose'],
-                                },
-                              );
-                            }
-                          });
-                    }
-                  });
-            }
-          }
+      if(onValue.statusCode == 200){
+        DialogUtil.closeDialog();
+        Get.offAllNamed(Routes.HOME)!.then((onValue) {
+          homeController.refresh();
         });
+      }
+    });
+  }
+
+  void insertPiutangDraftSO(String kodePay) async {
+    if (dataArgs['purpose'] == "booking") {
+      Detail newDetail = Detail();
+      newDetail.productUid = dataArgs['paket'].jenisPekerjaan;
+      newDetail.note = "";
+      newDetail.quantity = 1;
+      newDetail.amount = double.parse(
+        dataArgs['paket'].nominal,
+      ).toInt();
+      newDetail.disc2 = 0;
+      newDetail.disc3 = 0;
+      newDetail.discvaluepost = 0;
+      newDetail.tipe = "nonstok";
+      newDetail.satuan = "";
+      newDetail.paket = "_";
+      newDetail.jmlpaket = 1;
+      newDetail.rasio = 1;
+
+      cart2Request
+          .connectionAPI(
+        newDetail,
+        double.parse(dataArgs["total"]).toInt(),
+        dataArgs['rentObject'].kode,
+        dataArgs['paket'].kode,
+        dataArgs['jamAwal'],
+        dataArgs['jamAkhir'],
+        dataArgs['tglBooking'].toString(),
+        dataArgs['paket'].jenisPekerjaan,
+        "QRIS",
+      )
+          .then((cartResp) async {
+        if (cartResp.status == "success") {
+          await insertpiutangdraftsoRequest
+              .connectionAPI(kodePay, cartResp.kodenota!, dataArgs["total"], "GOPAY")
+              .then((onValue) async{
+            if (onValue.status!.toLowerCase() == "success") {
+              await approvedraftsoRequest
+                  .connectionAPI(cartResp.kodenota!)
+                  .then((onValue) {
+                if (onValue.status == "success") {
+                  Get.offNamed(
+                    Routes.PAYMENTSUCCESS,
+                    arguments: {
+                      "nominal": dataArgs["total"],
+                      "point": "0",
+                      "bentukDana": "QRIS",
+                      "purpose": dataArgs['purpose'],
+                    },
+                  );
+                }
+              });
+
+            }
+          });
+
+
+        }
+      });
+    }else if(dataArgs['purpose'] == "topup"){
+      await insertpiutangdraftsoRequest
+          .connectionAPI(kodePay, kodePay, dataArgs["total"], "GOPAY")
+          .then((onValue) {
+        if (onValue.status!.toLowerCase() == "success") {
+          Get.offNamed(
+            Routes.PAYMENTSUCCESS,
+            arguments: {
+              "nominal": dataArgs["total"],
+              "point": dataArgs["point"],
+              "bentukDana": "QRIS",
+              "purpose": dataArgs['purpose'],
+            },
+          );
+
+        }
+      });
+    }
   }
 
   void downloadQR()async{
