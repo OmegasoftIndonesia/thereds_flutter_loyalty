@@ -90,7 +90,7 @@ class TransactionHistoryView extends GetView<TransactionHistoryController> {
                                       ),
                                     ),
                                     Text(
-                                      DateFormat('MM dd, yyyy - HH.mm').format(
+                                      DateFormat('dd MMM yyyy').format(
                                         DateTime.parse(
                                           controller
                                               .listDepo

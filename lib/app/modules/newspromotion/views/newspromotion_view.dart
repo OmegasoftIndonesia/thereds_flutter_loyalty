@@ -26,32 +26,30 @@ class NewspromotionView extends GetView<NewspromotionController> {
         ),
         backgroundColor: Color(Constants.BGApp),
       ),
-      body: Center(
-          child: SizedBox(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Obx(() {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.network(controller.foto.value, errorBuilder: (context,e,s){
-                        return Icon(Icons.info);
-                      },),
-                      SizedBox(height: 20,),
-                      Text("Headline", style: TextStyle(color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),),
-                      Text(controller.detail.value,
-                        style: TextStyle(color: Colors.white, fontSize: 12),)
-                    ],
-                  );
-                }),
-              ),
-            ),
-          )
-      ),
+      body: SizedBox(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Obx(() {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.network(controller.foto.value, errorBuilder: (context,e,s){
+                    return Icon(Icons.info);
+                  },),
+                  SizedBox(height: 20,),
+                  Text(controller.judul.value, style: TextStyle(color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),),
+                  Text(controller.detail.value,
+                    style: TextStyle(color: Colors.white, fontSize: 12),)
+                ],
+              );
+            }),
+          ),
+        ),
+      )
     );
   }
 }

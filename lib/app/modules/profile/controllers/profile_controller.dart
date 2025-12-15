@@ -50,9 +50,11 @@ class ProfileController extends GetxController {
   void updateCustProfile() async {
     DialogUtil.loadingDialog();
     if (formKey.currentState!.validate()) {
-      await uploadMediawithRetry.upload(File(pickedFilePath.value), profilePicName!).then((onValue) async{
+      if(profilePicName == null){
         await setCustProfileRequest
-            .connectionAPI(selectedDateValue!, kota.text, (fotoKtpIsChanged.value)?profilePicName!:"")
+            .connectionAPI(selectedDateValue!, kota.text, (fotoKtpIsChanged.value)?profilePicName!:util.getString(
+          PreferencesUtil.fotoProfil
+        )!)
             .then((onValue) async {
           if (onValue.status!.toLowerCase() == "success") {
             await loginOTP2Request
@@ -82,7 +84,41 @@ class ProfileController extends GetxController {
             DialogUtil.show("Profile Update Failed");
           }
         });
-      });
+      }else{
+        await uploadMediawithRetry.upload(File(pickedFilePath.value), profilePicName!).then((onValue) async{
+          await setCustProfileRequest
+              .connectionAPI(selectedDateValue!, kota.text, (fotoKtpIsChanged.value)?profilePicName!:"")
+              .then((onValue) async {
+            if (onValue.status!.toLowerCase() == "success") {
+              await loginOTP2Request
+                  .connectionAPI(util.getString(PreferencesUtil.phone)!)
+                  .then((onValue) {
+
+                DialogUtil.closeDialog();
+
+                util.putString(PreferencesUtil.kota, onValue.data!.kota!);
+                util.putString(
+                  PreferencesUtil.tglLahir,
+                  onValue.data!.tglLahir!,
+                );
+                kotaVal.value = onValue.data!.kota!;
+                dayVal.value = DateFormat(
+                  "dd",
+                ).format(DateTime.parse(onValue.data!.tglLahir!));
+                monthVal.value = DateFormat(
+                  "MMMM",
+                ).format(DateTime.parse(onValue.data!.tglLahir!));
+                yearVal.value = DateFormat(
+                  "yyyy",
+                ).format(DateTime.parse(onValue.data!.tglLahir!));
+                util.putString(PreferencesUtil.fotoProfil, onValue.data!.fotoOrangKTP!);
+              });
+            } else {
+              DialogUtil.show("Profile Update Failed");
+            }
+          });
+        });
+      }
     }
   }
 

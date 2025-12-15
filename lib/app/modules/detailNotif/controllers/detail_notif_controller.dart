@@ -1,12 +1,11 @@
 import 'package:get/get.dart';
 
-class NewspromotionController extends GetxController {
-  //TODO: Implement NewspromotionController
+class DetailNotifController extends GetxController {
+  //TODO: Implement DetailNotifController
 
   final count = 0.obs;
-  RxString detail = "".obs;
-  RxString foto= "".obs;
   RxString judul = "".obs;
+  RxString keterangan = "".obs;
   @override
   void onInit() {
     super.onInit();
@@ -15,9 +14,8 @@ class NewspromotionController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-     detail.value = Get.arguments["detail"];
-     foto.value = Get.arguments['image'];
-     judul.value = Get.arguments['judul'];
+    keterangan.value = Get.arguments["keterangan"];
+    judul.value = Get.arguments['judul'];
   }
 
   @override

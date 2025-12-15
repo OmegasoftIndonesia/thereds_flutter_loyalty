@@ -16,7 +16,6 @@ class LoginView extends GetView<LoginController> {
       backgroundColor: Color(Constants.BGApp),
       body: Center(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(

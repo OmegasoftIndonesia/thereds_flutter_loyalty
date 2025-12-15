@@ -4,6 +4,8 @@ import '../modules/booking/bindings/booking_binding.dart';
 import '../modules/booking/views/booking_view.dart';
 import '../modules/bookingHistory/bindings/booking_history_binding.dart';
 import '../modules/bookingHistory/views/booking_history_view.dart';
+import '../modules/detailNotif/bindings/detail_notif_binding.dart';
+import '../modules/detailNotif/views/detail_notif_view.dart';
 import '../modules/gamelist/bindings/gamelist_binding.dart';
 import '../modules/gamelist/views/gamelist_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -138,6 +140,11 @@ class AppPages {
       name: _Paths.BOOKING_HISTORY,
       page: () => const BookingHistoryView(),
       binding: BookingHistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_NOTIF,
+      page: () => const DetailNotifView(),
+      binding: DetailNotifBinding(),
     ),
   ];
 }

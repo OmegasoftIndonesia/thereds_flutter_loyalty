@@ -61,7 +61,7 @@ class HomeController extends GetxController {
             onTap: () {
               Get.toNamed(
                 Routes.NEWSPROMOTION,
-                arguments: {"image": action.link, "detail": action.isi},
+                arguments: {"image": (action.gambardetail != "")?action.gambardetail:action.link, "detail": action.isi, "judul": action.judul},
               );
             },
             child: Image.network(
@@ -117,6 +117,7 @@ class HomeController extends GetxController {
     getMemberLevel();
     getMemberPoint();
     getMemberWallet();
+
     getServerKey();
   }
 

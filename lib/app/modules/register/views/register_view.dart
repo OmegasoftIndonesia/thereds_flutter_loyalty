@@ -1,8 +1,10 @@
 import 'package:bottom_picker/bottom_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:thereds_flutter_loyalty/app/modules/login/views/login_view.dart';
 
 import '../../../data/Constants.dart';
@@ -17,10 +19,6 @@ class RegisterView extends GetView<RegisterController> {
       backgroundColor: Color(Constants.BGApp),
       body: Center(
         child: SizedBox(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -43,8 +41,6 @@ class RegisterView extends GetView<RegisterController> {
                           style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                         SizedBox(height: 60),
-
-
                         Form(
                           key: controller.formKey,
                           child: Column(
@@ -63,6 +59,9 @@ class RegisterView extends GetView<RegisterController> {
                                 child: TextFormField(
                                   controller: controller.name,
                                   style: TextStyle(color: Colors.white),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
+                                  ],
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     hint: Text("Full Name",
@@ -96,6 +95,9 @@ class RegisterView extends GetView<RegisterController> {
                                 child: TextFormField(
                                   controller: controller.hp,
                                   style: TextStyle(color: Colors.white),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                                  ],
                                   keyboardType: TextInputType.phone,
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
@@ -143,7 +145,9 @@ class RegisterView extends GetView<RegisterController> {
                                   validator: (value) {
                                     if (value!.length <= 0) {
                                       return "E-Mail can't be empty";
-                                    } else {
+                                    } else if(!value.contains("@")){
+                                      return "E-Mail format not valid";
+                                    }else {
                                       return null;
                                     }
                                   },
@@ -193,7 +197,7 @@ class RegisterView extends GetView<RegisterController> {
                                     ),
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hint: Text("${controller.selectedDate.value}",
+                                      hint: Text("${DateFormat("yyyy-MM-dd").format(controller.selectedDate.value)}",
                                         style: TextStyle(color: Colors.white),),
                                       prefixIcon: Icon(
                                         Icons.calendar_month,

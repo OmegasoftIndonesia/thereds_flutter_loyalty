@@ -78,7 +78,7 @@ class PointhistoryView extends GetView<PointhistoryController> {
                                             color: Colors.white,
                                             fontSize: 12
                                         )),
-                                    Text("${DateFormat('MM dd, yyyy - HH.mm')
+                                    Text("${DateFormat('dd MMM yyyy')
                                         .format(DateTime.parse(
                                         controller.dataPoint.value.data![index]
                                             .tgl!))}", style: TextStyle(

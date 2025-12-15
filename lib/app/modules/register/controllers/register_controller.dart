@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:thereds_flutter_loyalty/app/data/request/insertCustRequest.dart';
+import 'package:thereds_flutter_loyalty/app/routes/app_pages.dart';
 import 'package:thereds_flutter_loyalty/app/util/dialog_util.dart';
 
 class RegisterController extends GetxController {
@@ -33,6 +34,7 @@ class RegisterController extends GetxController {
         if(onValue.status!.toLowerCase() == "success"){
           DialogUtil.closeDialog();
           DialogUtil.show("Register Success");
+          Get.offAllNamed(Routes.LOGIN);
         }else{
           DialogUtil.show("Register Failed");
         }

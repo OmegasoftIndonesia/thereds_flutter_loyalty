@@ -28,8 +28,15 @@ class GamelistController extends GetxController {
       listRent.value = onValue;
       await getGameListByRentObjectRequest.connectionAPI().then((onValueGame) {
         dataGameTemp.addAll(onValueGame.data!);
+        selectIndex.value = 0;
+        List<DataGame> qResult = dataGameTemp
+            .where((test) => test.noRentObject == listRent
+            .value
+            .data![0]
+            .kode!)
+            .toList();
 
-        onValueGame.data!.forEach((action) {
+        qResult.forEach((action) {
           print("imageGame: ${Constants.internetImage}${action.gambar}");
           if(action.aktif == "1"){
             GameItem.add(

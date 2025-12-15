@@ -16,11 +16,12 @@ class LoginController extends GetxController {
 
       DialogUtil.closeDialog();
 
-      if(onValue.status == "success"){
-
+      if(onValue.message!.toLowerCase().contains("success")){
         Get.offAllNamed(Routes.OTP, arguments: {
           "custData":onValue.data
         });
+      }else if(onValue.message!.toLowerCase().contains("register")){
+        DialogUtil.show("Nomor tidak terdaftar, Silahkan melakukan pendaftaran terlebih dahulu");
       }else{
         DialogUtil.show("Login Gagal, Silahkan coba lagi setelah beberapa saat.");
       }

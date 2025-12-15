@@ -45,39 +45,49 @@ class NotificationView extends GetView<NotificationController> {
                                   )
                               )
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Image.asset(
-                                "${Constants.imageAsset}notifLogo.png",
-                                width: 50, height: 50,),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("The Reds Official",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold
-                                      )),
-                                  SizedBox(
-                                    width: 250,
-                                    child: Text("${controller.listNotif[index]
-                                        .keterangan}",
-                                      style: TextStyle(
-                                          color: Colors.white
-                                      ),),
-                                  )
-                                ],
-                              ),
-                              Text(DateFormat("HH:mm").format(DateTime.parse(
-                                  controller.listNotif[index].createDate!)),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold
-                                  ))
-                            ],
+                          child: GestureDetector(
+                            onTap: (){
+                              Get.toNamed(Routes.DETAIL_NOTIF, arguments: {
+                                "judul":controller.listNotif[index]
+                                    .judul,
+                                "keterangan":controller.listNotif[index]
+                                  .keterangan,
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  "${Constants.imageAsset}notifLogo.png",
+                                  width: 50, height: 50,),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("The Reds Official",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold
+                                        )),
+                                    SizedBox(
+                                      width: 250,
+                                      child: Text("${controller.listNotif[index]
+                                          .judul}",
+                                        style: TextStyle(
+                                            color: Colors.white
+                                        ),),
+                                    )
+                                  ],
+                                ),
+                                Text(DateFormat("HH:mm").format(DateTime.parse(
+                                    controller.listNotif[index].createDate!)),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold
+                                    ))
+                              ],
+                            ),
                           )
                       ),
                     );
