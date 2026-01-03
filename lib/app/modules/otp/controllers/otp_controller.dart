@@ -6,6 +6,7 @@ import 'package:thereds_flutter_loyalty/app/data/request/sendOTPRequest.dart';
 import 'package:thereds_flutter_loyalty/app/data/request/validateOTPRequest.dart';
 import 'package:thereds_flutter_loyalty/app/data/response/loginOTP2Response.dart';
 import 'package:thereds_flutter_loyalty/app/util/dialog_util.dart';
+import 'package:thereds_flutter_loyalty/app/util/injector.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../util/shared_prefs.dart';
@@ -78,7 +79,7 @@ class OtpController extends GetxController {
                 );
               }
             });
-
+            notifUtils().subscribeToPersonalTopic(onValue[0].kode!);
             Get.offAllNamed(Routes.HOME);
           });
         } else {

@@ -17,7 +17,7 @@ class NotificationView extends GetView<NotificationController> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Get.offNamed(Routes.HOME);
+            Get.back();
           },
           icon: Icon(Icons.chevron_left, color: Colors.white),
         ),
@@ -71,7 +71,7 @@ class NotificationView extends GetView<NotificationController> {
                                             fontWeight: FontWeight.bold
                                         )),
                                     SizedBox(
-                                      width: 250,
+                                      width: 170,
                                       child: Text("${controller.listNotif[index]
                                           .judul}",
                                         style: TextStyle(
@@ -80,7 +80,7 @@ class NotificationView extends GetView<NotificationController> {
                                     )
                                   ],
                                 ),
-                                Text(DateFormat("HH:mm").format(DateTime.parse(
+                                Text(DateFormat("dd/MM/yyyy HH:mm").format(DateTime.parse(
                                     controller.listNotif[index].createDate!)),
                                     style: TextStyle(
                                         color: Colors.white,

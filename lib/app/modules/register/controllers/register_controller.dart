@@ -31,10 +31,10 @@ class RegisterController extends GetxController {
       await insertCustRequest
           .connectionAPI(email.text, hp.text, name.text, kota.text)
           .then((onValue) {
+        DialogUtil.closeDialog();
         if(onValue.status!.toLowerCase() == "success"){
-          DialogUtil.closeDialog();
-          DialogUtil.show("Register Success");
-          Get.offAllNamed(Routes.LOGIN);
+          Get.offAllNamed(Routes.LOGIN,  arguments: {"message": "Register Success"});
+
         }else{
           DialogUtil.show("Register Failed");
         }

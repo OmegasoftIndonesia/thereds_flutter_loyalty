@@ -16,6 +16,7 @@ class RegisterView extends GetView<RegisterController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(Constants.BGApp),
       body: Center(
         child: SizedBox(

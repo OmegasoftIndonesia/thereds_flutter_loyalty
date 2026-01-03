@@ -7,7 +7,6 @@ import 'package:thereds_flutter_loyalty/app/routes/app_pages.dart';
 import 'package:thereds_flutter_loyalty/app/util/dialog_util.dart';
 
 import '../../../data/Constants.dart';
-import '../../home/views/home_view.dart';
 import '../controllers/topup_controller.dart';
 
 class TopupView extends GetView<TopupController> {
@@ -20,7 +19,7 @@ class TopupView extends GetView<TopupController> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Get.off(() => HomeView());
+            Get.back();
           },
           icon: Icon(Icons.chevron_left, color: Colors.white),
         ),

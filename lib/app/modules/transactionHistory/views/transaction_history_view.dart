@@ -18,7 +18,7 @@ class TransactionHistoryView extends GetView<TransactionHistoryController> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Get.off(() => HomeView());
+            Get.back();
           },
           icon: Icon(Icons.chevron_left, color: Colors.white),
         ),
@@ -30,7 +30,7 @@ class TransactionHistoryView extends GetView<TransactionHistoryController> {
       ),
       body: Center(
         child: Obx(() {
-          return (controller.listDepo.value.data != null)?Container(
+          return (controller.listDepo.value.data != null) ? Container(
             child: ListView.builder(
               itemCount: controller.listDepo.value.data!.length,
               itemBuilder: (BuildContext context, index) {
@@ -62,11 +62,19 @@ class TransactionHistoryView extends GetView<TransactionHistoryController> {
                                     SizedBox(
                                       width: 180,
                                       child: Text(
-                                        controller
+                                        (controller
                                             .listDepo
                                             .value
                                             .data![index]
-                                            .keterangan!,
+                                            .keterangan! != "")? controller
+                                            .listDepo
+                                            .value
+                                            .data![index]
+                                            .keterangan!: controller
+                                            .listDepo
+                                            .value
+                                            .data![index]
+                                            .kodeNota!,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -109,18 +117,34 @@ class TransactionHistoryView extends GetView<TransactionHistoryController> {
                               ),
                             ],
                           ),
-                          Text(
-                           NumberFormatter.decimal(double.parse(controller
-                                .listDepo
-                                .value
-                                .data![index]
-                                .depositBalance!).toInt()),
-                            style: TextStyle(
+                          (double.parse(controller.listDepo.value.data![index]
+                              .depositDebet!).toInt() != 0) ?
+                          Text("+ ${double.parse(
+                              controller.listDepo.value.data![index]
+                                  .depositDebet!).toInt()}"
+                              , style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17
+                              )) : (double.parse(
+                              controller.listDepo.value.data![index]
+                                  .depositKredit!).toInt() != 0) ? Text(
+                              "- ${double.parse(
+                                  controller.listDepo.value.data![index]
+                                      .depositKredit!).toInt()}"
+                              , style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17
+                          )):Text(
+                              "+ ${double.parse(
+                                  controller.listDepo.value.data![index]
+                                      .depositBalance!).toInt()}"
+                              , style: TextStyle(
                               color: Colors.green,
                               fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                            ),
-                          ),
+                              fontSize: 17
+                          ))
                         ],
                       ),
                     ),
@@ -128,7 +152,7 @@ class TransactionHistoryView extends GetView<TransactionHistoryController> {
                 );
               },
             ),
-          ):SizedBox();
+          ) : SizedBox();
         }),
       ),
     );

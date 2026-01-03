@@ -19,7 +19,7 @@ class PointhistoryView extends GetView<PointhistoryController> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Get.offNamed(Routes.HOME);
+            Get.back();
           },
           icon: Icon(Icons.chevron_left, color: Colors.white),
         ),
@@ -90,14 +90,19 @@ class PointhistoryView extends GetView<PointhistoryController> {
                               ),
                             ],
                           ),
-                          Text("${NumberFormatter.decimal(double.parse(
-                              controller.dataPoint.value.data![index].balance!)
-                              .toInt())}"
+                          (double.parse(controller.dataPoint.value.data![index].debet!).toInt() != 0)?
+                          Text("+ ${double.parse(controller.dataPoint.value.data![index].debet!).toInt()}"
                               , style: TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17
+                              )):Text("- ${double.parse(controller.dataPoint.value.data![index].kredit!).toInt()}"
+                              , style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17
                               ))
+
                         ],
                       ),
                     ),

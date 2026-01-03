@@ -10,12 +10,14 @@ class TransactionHistoryController extends GetxController {
   final count = 0.obs;
 
   Rx<ListHistoryDepositWithDepositSOResponse> listDepo = ListHistoryDepositWithDepositSOResponse().obs;
-
   void getMemberWallet()async{
     DialogUtil.loadingDialog();
     await ListHistoryDepositWithDepositSORequest.connectionAPI(30).then((onValue){
       DialogUtil.closeDialog();
+
       listDepo.value = onValue;
+      listDepo.value.data =
+          listDepo.value.data!.reversed.toList();
     });
   }
 

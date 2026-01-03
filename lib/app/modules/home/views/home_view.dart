@@ -58,7 +58,7 @@ class HomeView extends GetView<HomeController> {
         actions: [
           IconButton(
             onPressed: () {
-              Get.offNamed(Routes.BOOKING_HISTORY);
+              Get.toNamed(Routes.BOOKING_HISTORY);
             },
             icon: ImageIcon(AssetImage(
                 "${Constants.imageAsset}ActivityHistory.png"

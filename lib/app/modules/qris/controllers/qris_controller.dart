@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,7 +19,7 @@ import '../../../routes/app_pages.dart';
 import '../../home/controllers/home_controller.dart';
 import '../../home/views/home_view.dart';
 
-class QrisController extends GetxController {
+class QrisController extends GetxController with WidgetsBindingObserver {
   //TODO: Implement QrisController
 
   final count = 0.obs;
@@ -27,6 +30,8 @@ class QrisController extends GetxController {
   var isDownloading = false.obs;
   var filePath = ''.obs;
   var savedToGallery = false.obs;
+  String? LastCode="";
+  bool _isActive = true;
   HomeController homeController = Get.find<HomeController>();
 
   void createGopay() async {
@@ -42,21 +47,56 @@ class QrisController extends GetxController {
   }
 
   void checkPayment(String code) async {
-    await getGopayTransRequest.connectionAPI(code).then((onValue) {
-      if (onValue.data!.transactionStatus!.toLowerCase() == "pending" ||
-          onValue.data!.transactionStatus!.toLowerCase() == "undefined") {
+    // await getGopayTransRequest.connectionAPI(code).then((onValue) {
+    //   if (onValue.data!.transactionStatus!.toLowerCase() == "pending" ||
+    //       onValue.data!.transactionStatus!.toLowerCase() == "undefined") {
+    //     checkPayment(code);
+    //   } else if(onValue.data!.transactionStatus!.toLowerCase() != "cancel") {
+    //     insertPiutangDraftSO(code);
+    //   }
+    // });
+    LastCode =code;
+    try {
+      final onValue = await getGopayTransRequest.connectionAPI(code);
+
+      if (onValue.data?.transactionStatus == null) return;
+
+      final status = onValue.data!.transactionStatus!.toLowerCase();
+
+      if (status == "pending" || status == "undefined") {
         checkPayment(code);
-      } else if(onValue.data!.transactionStatus!.toLowerCase() != "cancel") {
+      } else if (status != "cancel") {
         insertPiutangDraftSO(code);
       }
-    });
+    } on SocketException {
+      // App backgrounded → ignore
+      return;
+    } on HttpException {
+      // Same case
+      return;
+    } on DioException catch (e) {
+      final err = e.error;
+
+      if (err is SocketException ||
+          err is HttpException ||
+          err is OSError ||
+          e.type == DioExceptionType.connectionError ||
+          e.type == DioExceptionType.unknown) {
+        // App backgrounded → expected → ignore
+        return;
+      }
+
+      rethrow; // real Dio error
+    } catch (e) {
+      // Real error
+      rethrow;
+    }
   }
 
-  void cancelGopayPayment() async{
+  void cancelGopayPayment() async {
     DialogUtil.loadingDialog();
-    await gopayCancel2Request.connectionAPI(kodePay!).then((onValue){
-
-      if(onValue.statusCode == 200){
+    await gopayCancel2Request.connectionAPI(kodePay!).then((onValue) {
+      if (onValue.statusCode == 200) {
         DialogUtil.closeDialog();
         Get.offAllNamed(Routes.HOME)!.then((onValue) {
           homeController.refresh();
@@ -71,9 +111,7 @@ class QrisController extends GetxController {
       newDetail.productUid = dataArgs['paket'].jenisPekerjaan;
       newDetail.note = "";
       newDetail.quantity = 1;
-      newDetail.amount = double.parse(
-        dataArgs['paket'].nominal,
-      ).toInt();
+      newDetail.amount = double.parse(dataArgs['paket'].nominal).toInt();
       newDetail.disc2 = 0;
       newDetail.disc3 = 0;
       newDetail.discvaluepost = 0;
@@ -85,71 +123,72 @@ class QrisController extends GetxController {
 
       cart2Request
           .connectionAPI(
-        newDetail,
-        double.parse(dataArgs["total"]).toInt(),
-        dataArgs['rentObject'].kode,
-        dataArgs['paket'].kode,
-        dataArgs['jamAwal'],
-        dataArgs['jamAkhir'],
-        dataArgs['tglBooking'].toString(),
-        dataArgs['paket'].jenisPekerjaan,
-        "QRIS",
-      )
+            newDetail,
+            double.parse(dataArgs["total"]).toInt(),
+            dataArgs['rentObject'].kode,
+            dataArgs['paket'].kode,
+            dataArgs['jamAwal'],
+            dataArgs['jamAkhir'],
+            dataArgs['tglBooking'].toString(),
+            dataArgs['paket'].jenisPekerjaan,
+            "QRIS",
+          )
           .then((cartResp) async {
-        if (cartResp.status == "success") {
-          await insertpiutangdraftsoRequest
-              .connectionAPI(kodePay, cartResp.kodenota!, dataArgs["total"], "GOPAY")
-              .then((onValue) async{
-            if (onValue.status!.toLowerCase() == "success") {
-              await approvedraftsoRequest
-                  .connectionAPI(cartResp.kodenota!)
-                  .then((onValue) {
-                if (onValue.status == "success") {
-                  Get.offNamed(
-                    Routes.PAYMENTSUCCESS,
-                    arguments: {
-                      "nominal": dataArgs["total"],
-                      "point": "0",
-                      "bentukDana": "QRIS",
-                      "purpose": dataArgs['purpose'],
-                    },
-                  );
-                }
-              });
-
+            if (cartResp.status == "success") {
+              await insertpiutangdraftsoRequest
+                  .connectionAPI(
+                    kodePay,
+                    cartResp.kodenota!,
+                    dataArgs["total"],
+                    "GOPAY",
+                  )
+                  .then((onValue) async {
+                    if (onValue.status!.toLowerCase() == "success") {
+                      await approvedraftsoRequest
+                          .connectionAPI(cartResp.kodenota!)
+                          .then((onValue) {
+                            if (onValue.status == "success") {
+                              Get.offNamed(
+                                Routes.PAYMENTSUCCESS,
+                                arguments: {
+                                  "nominal": dataArgs["total"],
+                                  "point": "0",
+                                  "bentukDana": "QRIS",
+                                  "purpose": dataArgs['purpose'],
+                                },
+                              );
+                            }
+                          });
+                    }
+                  });
             }
           });
-
-
-        }
-      });
-    }else if(dataArgs['purpose'] == "topup"){
+    } else if (dataArgs['purpose'] == "topup") {
       await insertpiutangdraftsoRequest
           .connectionAPI(kodePay, kodePay, dataArgs["total"], "GOPAY")
           .then((onValue) {
-        if (onValue.status!.toLowerCase() == "success") {
-          Get.offNamed(
-            Routes.PAYMENTSUCCESS,
-            arguments: {
-              "nominal": dataArgs["total"],
-              "point": dataArgs["point"],
-              "bentukDana": "QRIS",
-              "purpose": dataArgs['purpose'],
-            },
-          );
-
-        }
-      });
+            if (onValue.status!.toLowerCase() == "success") {
+              Get.offNamed(
+                Routes.PAYMENTSUCCESS,
+                arguments: {
+                  "nominal": dataArgs["total"],
+                  "point": dataArgs["point"],
+                  "bentukDana": "QRIS",
+                  "purpose": dataArgs['purpose'],
+                },
+              );
+            }
+          });
     }
   }
 
-  void downloadQR()async{
-    String savePath="";
+  void downloadQR() async {
+    String savePath = "";
     try {
       isDownloading.value = true;
       progress.value = 0.0;
 
-      var status = await Permission.storage.request();
+      var status = await Permission.photos.request();
       if (status.isDenied || status.isPermanentlyDenied) {
         Get.snackbar('Permission', 'Akses galeri ditolak');
         isDownloading.value = false;
@@ -189,10 +228,10 @@ class QrisController extends GetxController {
     }
   }
 
-
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -203,7 +242,18 @@ class QrisController extends GetxController {
 
   @override
   void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
     super.onClose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _isActive = state == AppLifecycleState.resumed;
+
+    if (_isActive) {
+      // User returned from GoPay
+      checkPayment(LastCode!);
+    }
   }
 
   void increment() => count.value++;

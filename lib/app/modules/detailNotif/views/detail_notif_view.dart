@@ -15,12 +15,12 @@ class DetailNotifView extends GetView<DetailNotifController> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Get.offNamed(Routes.HOME);
+              Get.back();
             },
             icon: Icon(Icons.chevron_left, color: Colors.white),
           ),
           title: const Text(
-            'Promotion & News',
+            'Notification',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Color(Constants.BGApp),

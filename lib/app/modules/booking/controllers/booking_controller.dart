@@ -28,9 +28,8 @@ class BookingController extends GetxController {
   String? jamAwal;
   String? jamAkhir;
   getPaketByRentObjectResponse? paketList;
-  RxList<Map<String, dynamic>> times = <Map<String, dynamic>>[
-
-  ].obs;
+  RxList<Map<String, dynamic>> times = <Map<String, dynamic>>[].obs;
+  var durasi;
 
   Color getStatusColor(String status) {
     switch (status) {
@@ -51,7 +50,9 @@ class BookingController extends GetxController {
   void pickDate(DateTime date) async {
     DialogUtil.loadingDialog();
     selectedDate.value = date;
-    await ListRentObjectRequest.connectionAPI(DateFormat("yyyyMMdd").format(date)).then((onValue){
+    await ListRentObjectRequest.connectionAPI(
+      DateFormat("yyyyMMdd").format(date),
+    ).then((onValue) {
       listRentObject.value = onValue;
       DialogUtil.closeDialog();
     });
@@ -61,52 +62,80 @@ class BookingController extends GetxController {
     DialogUtil.loadingDialog();
     await getPaketByRentObjectRequest.connectionAPI(rentObject).then((onValue) {
       DialogUtil.closeDialog();
-      kodeRent = listRentObject.value.data!.firstWhere((test) => test.kode == rentObject);
+      kodeRent = listRentObject.value.data!.firstWhere(
+        (test) => test.kode == rentObject,
+      );
       tempList.clear();
       dropdownPaket.clear();
       paketList = onValue;
       selectedpaket.value = 0;
-      if(onValue.data!.length>0){
+      total.value = 0;
+      jamAkhir = null;
+      jamAwal = null;
+      if (onValue.data!.length > 0) {
         onValue.data!.forEach((action) {
           tempList.add(
             DropdownMenuItem(
               value: action.kode,
-              child: Text("${action.keterangan}", style: TextStyle(color: Colors.white)),
+              child: Text(
+                "${action.keterangan}",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           );
         });
         dropdownPaket.assignAll(tempList);
-        dropdownPaketValue.value = onValue.data![0].kode!;
+        dropdownPaketValue.value = (onValue.data!.length > 0)
+            ? onValue.data![0].kode!
+            : "";
         paket = onValue.data![0];
         selectedpaket.value = double.parse(onValue.data![0].duration!).toInt();
-        total.value =double.parse(onValue.data![0].nominal!).toInt();
+        durasi = paketList!.data!.firstWhere(
+          (test) => test.kode == onValue.data![0].kode!,
+        );
+      } else {
+        dropdownPaketValue.value = (onValue.data!.length > 0)
+            ? onValue.data![0].kode!
+            : "";
       }
 
-      getRoomSchedule(rentObject,DateFormat("yyyy-MM-dd").format(selectedDate.value!));
+      getRoomSchedule(
+        rentObject,
+        DateFormat("yyyy-MM-dd").format(selectedDate.value!),
+      );
     });
   }
 
-  void getRoomSchedule(String norent, tgl)async{
+  void getRoomSchedule(String norent, tgl) async {
     RxList<Map<String, dynamic>> tempMap = times
         .map((e) => Map<String, dynamic>.from(e))
         .toList()
         .obs;
-    for(int i = 0; i<tempMap.length;i++){
+    for (int i = 0; i < tempMap.length; i++) {
       tempMap[i]['status'] = "";
     }
-    await getRoomScheduleRequest.connectionAPI(norent, tgl).then((onValue){
-      RxList<Map<String, dynamic>> tempMap = onValue.data!.map((e)=>Map<String,dynamic>.from(e.toJson())).toList().obs;
+    await getRoomScheduleRequest.connectionAPI(norent, tgl).then((onValue) {
+      RxList<Map<String, dynamic>> tempMap = onValue.data!
+          .map((e) => Map<String, dynamic>.from(e.toJson()))
+          .toList()
+          .obs;
       times.assignAll(tempMap);
       times.refresh();
     });
   }
-  void onSelectPaket(value){
+
+  void onSelectPaket(value) {
     dropdownPaketValue.value = value!;
-    if(paketList != null){
-      var durasi= paketList!.data!.firstWhere((test)=>test.kode == value);
+    if (paketList != null) {
+      durasi = paketList!.data!.firstWhere((test) => test.kode == value);
       selectedpaket.value = double.parse(durasi.duration!).toInt();
-      total.value = double.parse(durasi.nominal!).toInt();
       paket = durasi;
+      jamAwal = null;
+      jamAkhir = null;
+      getRoomSchedule(
+        listRentObject.value.data![selectIndex.value!.toInt()].kode!,
+        DateFormat("yyyy-MM-dd").format(selectedDate.value!),
+      );
     }
   }
 
@@ -117,9 +146,9 @@ class BookingController extends GetxController {
         .obs;
     int successCtr = 0;
 
-    tempMap.forEach((a){
-      if(a["StatusBooking"] == "Selected"){
-        a["StatusBooking"]="AVAILABLE";
+    tempMap.forEach((a) {
+      if (a["StatusBooking"] == "Selected") {
+        a["StatusBooking"] = "AVAILABLE";
       }
     });
 
@@ -131,10 +160,12 @@ class BookingController extends GetxController {
         DialogUtil.show("Jam ini sudah di booking, silahkan pilih jam lain");
         break;
       } else {
-       //int idx = tempMap.indexWhere((test) => test['number'] == i);
+        //int idx = tempMap.indexWhere((test) => test['number'] == i);
         tempMap[i]['StatusBooking'] = "Selected";
-        jamAwal = "${DateFormat("yyyy-MM-dd").format(selectedDate.value!)} ${times[start]['Jam']}";
-        jamAkhir = "${DateFormat("yyyy-MM-dd").format(selectedDate.value!)} ${times[start+selectedpaket.value]["Jam"]}";
+        jamAwal =
+            "${DateFormat("yyyy-MM-dd").format(selectedDate.value!)} ${times[start]['Jam']}";
+        jamAkhir =
+            "${DateFormat("yyyy-MM-dd").format(selectedDate.value!)} ${times[start + selectedpaket.value]["Jam"]}";
         successCtr++;
       }
     }
@@ -142,6 +173,7 @@ class BookingController extends GetxController {
     print("jamAwal: $jamAwal");
     print("jamAkhir: $jamAkhir");
     if (successCtr == selectedpaket.value) {
+      total.value = double.parse(durasi.nominal!).toInt();
       times.assignAll(tempMap);
       times.refresh();
     }

@@ -35,7 +35,7 @@ class BookingView extends GetView<BookingController> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Get.offNamed(Routes.HOME);
+            Get.back();
           },
           icon: Icon(Icons.chevron_left, color: Colors.white),
         ),
@@ -139,7 +139,11 @@ class BookingView extends GetView<BookingController> {
                       icon: Icon(Icons.keyboard_arrow_down, color: Colors
                           .white,),
                       isExpanded: true,
+                      hint: Text('No Data', style: TextStyle(
+                        color: Colors.white
+                      ),),
                       decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 12),
                           prefixIcon: Icon(
                             Icons.sports_esports, color: Colors.white,),
                           border: InputBorder.none

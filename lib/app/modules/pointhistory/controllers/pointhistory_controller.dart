@@ -16,6 +16,8 @@ class PointhistoryController extends GetxController {
       if(onValue.status == "success"){
         DialogUtil.closeDialog();
         dataPoint.value = onValue;
+        dataPoint.value.data =
+            dataPoint.value.data!.reversed.toList();
       }else{
         DialogUtil.closeDialog();
         DialogUtil.show("Data tidak ditemukan");

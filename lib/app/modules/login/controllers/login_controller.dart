@@ -31,11 +31,16 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
   }
 
   @override
   void onReady() {
     super.onReady();
+    final message = Get.arguments?["message"];
+    if (message != null) {
+      DialogUtil.show(message);
+    }
   }
 
   @override

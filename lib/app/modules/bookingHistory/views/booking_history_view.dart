@@ -17,7 +17,7 @@ class BookingHistoryView extends GetView<BookingHistoryController> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Get.offNamed(Routes.HOME);
+            Get.back();
           },
           icon: Icon(Icons.chevron_left, color: Colors.white),
         ),

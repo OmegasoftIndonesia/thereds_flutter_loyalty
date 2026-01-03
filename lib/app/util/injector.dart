@@ -65,34 +65,53 @@ Future<bool?> isInternetAvailable() async {
 
 @pragma('vm:entry-point')
 Future<void> backgroundHandler(RemoteMessage msg) async {
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   FlutterLocalNotificationsPlugin flutterLocalNotif =
       FlutterLocalNotificationsPlugin();
 
-  String title = msg.data['title'] ?? "KISS Mobile";
+
+  const AndroidInitializationSettings androidInit =
+  AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  const InitializationSettings initSettings =
+  InitializationSettings(android: androidInit);
+
+  await flutterLocalNotif.initialize(initSettings);
+
+  const channel = AndroidNotificationChannel(
+    'the_reds_channel',
+    'The Reds Mobile',
+    description: 'The Reds Notification Channel',
+    importance: Importance.max,
+  );
+
+  final androidPlugin =
+  flutterLocalNotif.resolvePlatformSpecificImplementation<
+      AndroidFlutterLocalNotificationsPlugin>();
+
+  await androidPlugin?.createNotificationChannel(channel);
+
+  String title = msg.data['title'] ?? "The Reds Mobile";
   String deskripsi = msg.data['body'] ?? "";
 
-  if(msg.data.length>0){
-    flutterLocalNotif.show(
-      msg.hashCode,
-      title,
-      deskripsi,
-      payload: msg.data['title'],
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          "KISS",
-          "KISS Mobile",
-          channelDescription: "KISS Notification Channel",
-          icon: '@mipmap/ic_launcher',
-          importance: Importance.max,
-          priority: Priority.high,
-        ),
+  flutterLocalNotif.show(
+    msg.hashCode,
+    title,
+    deskripsi,
+    payload: msg.data['title'],
+    const NotificationDetails(
+      android: AndroidNotificationDetails(
+        "the_reds_channel",
+        "The Reds Mobile",
+        channelDescription: "The Reds Notification Channel",
+        icon: '@mipmap/ic_launcher',
+        importance: Importance.max,
+        priority: Priority.high,
       ),
-    );
-  }
-
+    ),
+  );
 }
 
 class notifUtils {
@@ -154,15 +173,15 @@ class notifUtils {
       }
     });
 
-    if (Constants.dbTestingName == "") {
-      messaging!.subscribeToTopic("TheReds_Public_Notification_Feed");
-      debugPrint(
-          "subscribe to channel [TheReds_Public_Notification_Feed]");
-    } else {
-      messaging!.subscribeToTopic("TheReds_Public_Notification_Feed_Test");
-      debugPrint(
-          "subscribe to channel [TheReds_Public_Notification_Feed_Test]");
-    }
+    // if (Constants.dbTestingName == "") {
+    //   messaging!.subscribeToTopic("Public_Notification_Feed");
+    //   debugPrint(
+    //       "subscribe to channel [Public_Notification_Feed]");
+    // } else {
+    //   messaging!.subscribeToTopic("Public_Notification_Feed_Test");
+    //   debugPrint(
+    //       "subscribe to channel [Public_Notification_Feed_Test]");
+    // }
 
     messaging!.getToken().then((token) {
       debugPrint("token messaging : $token");
@@ -182,32 +201,32 @@ class notifUtils {
   void subscribeToPersonalTopic(String kode) {
     if (Constants.dbTestingName == "") {
       messaging!.subscribeToTopic(
-          "TheReds_${kode.replaceAll("/", "")}_Notification_Feed");
+          "${Constants.cabang}_${kode.replaceAll("/", "")}_Notification_Feed");
       debugPrint(
-          "subscribe to channel [TheReds_${kode.replaceAll("/", "")}_Notification_Feed]");
+          "subscribe to channel [${Constants.cabang}_${kode.replaceAll("/", "")}_Notification_Feed]");
     }
 
     else {
       messaging!.subscribeToTopic(
-          "TheReds_${kode.replaceAll("/", "")}_Notification_Feed_Test");
+          "${Constants.cabang}_${kode.replaceAll("/", "")}_Notification_Feed_Test");
       debugPrint(
-          "subscribe to channel [TheReds_${kode.replaceAll("/", "")}_Notification_Feed_Test]");
+          "subscribe to channel [${Constants.cabang}_${kode.replaceAll("/", "")}_Notification_Feed_Test]");
     }
   }
 
   void subscribeToNotificationTopic(){
     if (Constants.dbTestingName == "") {
       messaging!.subscribeToTopic(
-          "TheReds_${Constants.cabang}_Notification_Feed");
+          "${Constants.cabang}_Notification_Feed");
       debugPrint(
-          "subscribe to channel [TheReds_${Constants.cabang}_Notification_Feed]");
+          "subscribe to channel [${Constants.cabang}_Notification_Feed]");
     }
 
     else {
       messaging!.subscribeToTopic(
-          "TheReds_${Constants.cabang}_Notification_Feed_Test");
+          "${Constants.cabang}_Notification_Feed_Test");
       debugPrint(
-          "subscribe to channel [TheReds_${Constants.cabang}_Notification_Feed_Test]");
+          "subscribe to channel [${Constants.cabang}_Notification_Feed_Test]");
     }
   }
 
@@ -233,7 +252,6 @@ class notifUtils {
       debugPrint('notification: ${notification.id}');
 
       var payload = notification.payload!;
-      String totalSaldoUser="0";
       if (payload != "") {
         debugPrint('notification payload: ' + notification.payload!);
         if (payload.toLowerCase().contains("rekapitulasi")) {

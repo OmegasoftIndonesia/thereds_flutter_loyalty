@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:thereds_flutter_loyalty/app/data/response/getGopayTransResponse.dart';
 
@@ -29,9 +31,11 @@ class getGopayTransRequest {
       getGopayTransRequest request = getGopayTransRequest();
       request.transactionCode = code;
 
+      dio.options..connectTimeout = const Duration(seconds: 60)..receiveTimeout =  const Duration(seconds: 60);
       dio.options.headers['Authorization']=Constants.apiToken;
       dio.options.headers['Uid']="tZD7CG3idLxrABc6KPpEeVqgXkyawjlH";
       dio.options.headers['server_key'] = util.getString(PreferencesUtil.serverKeyGopay);
+      dio.options.headers['Connection']= "close";
 
       dio.options.contentType = "application/x-www-form-urlencoded";
       print("URL: $URL");
@@ -43,8 +47,11 @@ class getGopayTransRequest {
       print(response.data);
 
       return getGopayTransResponse.fromJson(response.data);
-    } catch (e) {
-      print(e);
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.unknown &&
+          (e.error is SocketException || e.error is HttpException)) {
+        throw const SocketException('Connection aborted');
+      }
       rethrow;
     }
   }
